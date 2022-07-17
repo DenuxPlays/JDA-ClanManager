@@ -42,8 +42,7 @@ public class SystemSetup {
      */
     private void setUpDatabase() {
         try(Connection con = config.getDataSource().getConnection()) {
-            InputStream is = SystemSetup.class.getClassLoader().getResourceAsStream("schema.sql");
-            List<String> queries = Arrays.stream(new String(is.readAllBytes()).split(";")).filter(s -> !s.isEmpty()).collect(Collectors.toList());
+            List<String> queries = Arrays.stream(config.getQueries().split(";")).filter(s -> !s.isEmpty()).collect(Collectors.toList());
             log.debug("\t\t[*] Executing {} queries.", queries.size());
             for (String query : queries) {
                 log.debug("\t\t[*] Executing query {}/{} \n{}", queries.indexOf(query) + 1, queries.size(), query);
@@ -51,8 +50,6 @@ public class SystemSetup {
             }
         } catch (SQLException exception) {
             log.error("Could not set up the database.", exception);
-        } catch (IOException exception) {
-            log.error("Could not read schema.sql.", exception);
         }
     }
 }

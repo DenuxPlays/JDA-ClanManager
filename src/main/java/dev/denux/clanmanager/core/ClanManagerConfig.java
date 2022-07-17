@@ -14,6 +14,41 @@ public class ClanManagerConfig {
     private HikariDataSource dataSource;
     private ClanManager clanManager;
     private Class<? extends ClanManager> CMImplementation = ClanManagerImpl.class;
+    private String queries = "CREATE TABLE IF NOT EXISTS \"clan\" (\n" +
+            "    \"id\" SERIAL PRIMARY KEY,\n" +
+            "    \"verificationCode\" TEXT NOT NULL UNIQUE,\n" +
+            "    \"name\" TEXT NOT NULL,\n" +
+            "    \"tag\" TEXT NOT NULL,\n" +
+            "    \"discordGuildId\" BIGINT NOT NULL,\n" +
+            "    \"ownerId\" BIGINT NOT NULL,\n" +
+            "    \"leaderShipRoleId\" INT NOT NULL,\n" +
+            "    \"memberRoleId\" BIGINT NOT NULL,\n" +
+            "    \"discordChannelId\" BIGINT NOT NULL\n" +
+            ");\n" +
+            "\n" +
+            "CREATE TABLE IF NOT EXISTS \"clanMember\" (\n" +
+            "    \"id\" SERIAL PRIMARY KEY,\n" +
+            "    \"verificationTime\" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n" +
+            "    \"nickname\" TEXT NOT NULL,\n" +
+            "    \"leaderShipStatus\" BOOLEAN NOT NULL DEFAULT FALSE,\n" +
+            "    \"coOwnerStatus\" BOOLEAN NOT NULL DEFAULT FALSE,\n" +
+            "    \"locale\" TEXT NOT NULL,\n" +
+            "    \"clanId\" INT NOT NULL,\n" +
+            "    \"discordUserId\" BIGINT NOT NULL\n" +
+            ");\n" +
+            "\n" +
+            "CREATE TABLE IF NOT EXISTS \"reverificationFeature\" (\n" +
+            "    \"clanId\" INT PRIMARY KEY,\n" +
+            "    \"numberOfDays\" SMALLINT NOT NULL DEFAULT 90\n" +
+            ");";
+
+    public String getQueries() {
+        return queries;
+    }
+
+    public void setQueries(String queries) {
+        this.queries = queries;
+    }
 
     public Class<? extends ClanManager> getCMImplementation() {
         return CMImplementation;

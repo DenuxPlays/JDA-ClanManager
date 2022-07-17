@@ -75,6 +75,11 @@ public class ClanManagerBuilder {
         return this;
     }
 
+    public ClanManagerBuilder setOwnSchema(@Nonnull String schema) {
+        config.setQueries(schema);
+        return this;
+    }
+
     /**
      * Returns a {@link ClanManager} instance that has been validated.
      * @return the built, usable {@link ClanManager}
@@ -85,6 +90,9 @@ public class ClanManagerBuilder {
         if (config.getJda() == null) throw new IllegalStateException("JDA instance is null");
         if (config.getDataSource().getJdbcUrl().isEmpty() || config.getDataSource().getJdbcUrl().isEmpty()) {
             throw new IllegalArgumentException("You need to set a JDBC URL before building the ClanManager!");
+        }
+        if (config.getQueries().isEmpty() || config.getQueries().isBlank() ||config.getQueries() == null) {
+            throw new IllegalArgumentException("You need to set a queries before building the ClanManager!");
         }
 
         new SystemSetup(config).init();
