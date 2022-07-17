@@ -1,3 +1,4 @@
+[![](https://jitpack.io/v/DenuxPlays/JDA-ClanManager.svg)](https://jitpack.io/#DenuxPlays/JDA-ClanManager)
 # JDA-ClanManager
 
 
