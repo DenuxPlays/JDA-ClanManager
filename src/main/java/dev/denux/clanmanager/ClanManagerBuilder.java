@@ -25,7 +25,7 @@ public class ClanManagerBuilder {
      *
      * @param jda The JDA instance to use.
      */
-    public static ClanManagerBuilder setJDA(JDA jda) {
+    public static ClanManagerBuilder setJDA(@Nonnull JDA jda) {
         return new ClanManagerBuilder(jda);
     }
 
@@ -82,6 +82,11 @@ public class ClanManagerBuilder {
      */
     @Nonnull
     public ClanManager build() throws ReflectiveOperationException {
+        if (config.getJda() == null) throw new IllegalStateException("JDA instance is null");
+        if (config.getDataSource().getJdbcUrl().isEmpty() || config.getDataSource().getJdbcUrl().isEmpty()) {
+            throw new IllegalArgumentException("You need to set a JDBC URL before building the ClanManager!");
+        }
+
         new SystemSetup(config).init();
         return config.getCMImplementation().getDeclaredConstructor(ClanManagerConfig.class).newInstance(config);
     }
