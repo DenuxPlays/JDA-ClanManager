@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "dev.denux"
-version = "0.0.1"
+version = "1.0.0-alpha.1"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
