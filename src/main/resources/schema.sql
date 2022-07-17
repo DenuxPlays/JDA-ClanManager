@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS "clan" (
     "discordGuildId" BIGINT NOT NULL,
     "ownerId" BIGINT NOT NULL,
     "leaderShipRoleId" INT NOT NULL,
-    "memberRoleId" BIGNT NOT NULL,
+    "memberRoleId" BIGINT NOT NULL,
     "discordChannelId" BIGINT NOT NULL
 );
 
