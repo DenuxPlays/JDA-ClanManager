@@ -1,15 +1,35 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
 plugins {
     java
     `java-library`
+    `maven-publish`
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 group = "dev.denux"
+val archivesBaseName = "jda-clanmanager"
 version = "1.0.0-alpha.1"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
+}
+
+publishing {
+    publications {
+        register("Release", MavenPublication::class) {
+            from(components["java"])
+
+            artifactId = archivesBaseName
+            groupId = group as String
+            version = version as String
+        }
+    }
 }
 
 repositories {

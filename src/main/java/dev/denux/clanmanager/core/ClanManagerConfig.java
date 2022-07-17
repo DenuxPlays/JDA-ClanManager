@@ -4,6 +4,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import dev.denux.clanmanager.ClanManager;
 import dev.denux.clanmanager.internal.ClanManagerImpl;
 import net.dv8tion.jda.api.JDA;
+
 /**
  * Data class which contains the configuration for a single {@link ClanManager} instance.
  */
