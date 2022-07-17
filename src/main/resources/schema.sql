@@ -1,4 +1,3 @@
-//AUTO_INCREMENT
 CREATE TABLE IF NOT EXISTS "clan" (
     "id" SERIAL PRIMARY KEY,
     "verificationCode" TEXT NOT NULL UNIQUE,
