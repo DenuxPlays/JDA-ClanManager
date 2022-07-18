@@ -3,7 +3,6 @@ package dev.denux.clanmanager.internal.entities;
 import dev.denux.clanmanager.core.ClanManagerConfig;
 import dev.denux.clanmanager.entities.ClanMember;
 import dev.denux.clanmanager.entities.Clan;
-import dev.denux.clanmanager.utils.CMChecks;
 import dev.denux.clanmanager.utils.CMUtils;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.interactions.DiscordLocale;
@@ -25,7 +24,6 @@ public class ClanMemberImpl implements ClanMember {
     private final ClanManagerConfig config;
 
     public ClanMemberImpl(ClanManagerConfig config, int id) {
-        new CMChecks(config).checkClanMember(id);
         this.id = id;
         this.config = config;
     }

@@ -22,7 +22,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
 public class ClanImpl implements Clan {
@@ -33,7 +32,6 @@ public class ClanImpl implements Clan {
     private final ClanManagerConfig config;
 
     public ClanImpl(ClanManagerConfig config, int id) {
-        new CMChecks(config).checkClan(id);
         this.id = id;
         this.config = config;
     }
@@ -244,7 +242,6 @@ public class ClanImpl implements Clan {
             pstm.setBoolean(5, leaderShipStatus);
             pstm.setBoolean(6, isCoOwner);
             pstm.executeUpdate();
-            //TODO works?
             int memberId = pstm.getGeneratedKeys().getInt(1);
             con.close();
             return memberId;

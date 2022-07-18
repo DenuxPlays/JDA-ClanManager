@@ -2,8 +2,13 @@ package dev.denux.clanmanager;
 
 import dev.denux.clanmanager.entities.Clan;
 import dev.denux.clanmanager.entities.ClanMember;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * The core of this manager.
@@ -21,21 +26,39 @@ public interface ClanManager {
 
     /**
      * @param id The id of the clan.
-     * @return The {@link Clan} with the given id.
-     * @throws IllegalArgumentException If the clan with the given id does not exist.
+     * @return The {@link Clan} with the given id or null.
      */
+    @Nullable
     Clan getClan(int id);
 
     /**
      * @param code The code of the clan.
-     * @return The {@link Clan} with the given code.
+     * @return The {@link Clan} with the given code or null.
      */
+    @Nullable
     Clan getClanByVerificationCode(@Nonnull String code);
 
     /**
      * @param id The id of the clan member.
-     * @return The {@link ClanMember} with the given id.
+     * @return The {@link ClanMember} with the given id or null.
      * @throws IllegalArgumentException If the clan with the given id does not exist.
      */
+    @Nullable
     ClanMember getClanMember(int id);
+
+    /**
+     * Creates a new clan with the given attributes.
+     * @param name The name of the clan.
+     * @param tag The tag of the clan.
+     * @param verificationCode The verification code of the clan.
+     * @param guild The guild of the clan.
+     * @param owner The owner of the clan.
+     * @param channel The channel of the clan.
+     * @param leadershipRole The leadership role of the clan.
+     * @param memberRole The member role of the clan.
+     * @return The clan's id or -1 if the clan could not be created.
+     * @throws IllegalArgumentException If the given attributes are invalid.
+     */
+    int createClan(@Nonnull String name, @Nonnull String tag, @Nonnull String verificationCode, @Nonnull Guild guild, @Nonnull Member owner,
+                   @Nonnull TextChannel channel, @Nonnull Role leadershipRole, @Nonnull Role memberRole);
 }
