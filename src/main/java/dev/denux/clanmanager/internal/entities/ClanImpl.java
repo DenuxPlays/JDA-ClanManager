@@ -302,5 +302,8 @@ public class ClanImpl implements Clan {
         } catch (SQLException exception) {
             log.error("Failed to disable reverification feature.", exception);
         }
+        for (ClanMember clanMember : getAllClanMembers()) {
+            config.getReverificationManager().cancelSchedule(clanMember);
+        }
     }
 }
