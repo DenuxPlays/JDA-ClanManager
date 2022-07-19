@@ -151,6 +151,26 @@ public class ClanManagerImpl implements ClanManager {
     }
 
     @Override
+    public void deleteClan(@NotNull Clan clan) {
+        int clanId = clan.getId();
+        try(Connection con = config.getDataSource().getConnection()) {
+            PreparedStatement pstm = con.prepareStatement("DELETE FROM \"clan\" WHERE \"id\" = ?");
+            pstm.setInt(1, clanId);
+            pstm.executeUpdate();
+
+            pstm = con.prepareStatement("DELETE FROM \"clanMember\" WHERE \"clanId\" = ?");
+            pstm.setInt(1, clanId);
+            pstm.executeUpdate();
+
+            pstm = con.prepareStatement("DELETE FROM \"reverificationFeature\" WHERE \"clanId\" = ?");
+            pstm.setInt(1, clanId);
+            pstm.executeUpdate();
+        } catch (SQLException exception) {
+            log.error("Error while deleting clan", exception);
+        }
+    }
+
+    @Override
     public ReverificationStateManager getReverificationStateManager() {
         return config.getReverificationManager();
     }

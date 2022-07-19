@@ -82,6 +82,12 @@ public interface ClanManager {
                    @Nonnull TextChannel channel, @Nonnull Role leadershipRole, @Nonnull Role memberRole);
 
     /**
+     * Deletes the clan and all of its members.
+     * @param clan The clan you want to delete.
+     */
+    void deleteClan(@Nonnull Clan clan);
+
+    /**
      * @return The {@link ReverificationStateManager} instance.
      */
     ReverificationStateManager getReverificationStateManager();
