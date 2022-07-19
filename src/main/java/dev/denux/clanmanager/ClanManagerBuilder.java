@@ -111,7 +111,7 @@ public class ClanManagerBuilder {
     @Nonnull
     public ClanManagerBuilder setOwnHikariConfig(@Nonnull HikariConfig config) {
         if (!this.config.isUseOwnH2Database()) {
-            throw new IllegalStateException("You can only use this method together with enableOwnDatabase()");
+            throw new IllegalStateException("You can only use this method after calling ClanManagerBuilder#enableOwnDatabase()");
         }
         hConfig = config;
         return this;
