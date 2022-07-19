@@ -1,5 +1,6 @@
 package dev.denux.clanmanager;
 
+import dev.denux.clanmanager.core.ClanManagerConfig;
 import dev.denux.clanmanager.core.features.reverifications.ReverificationStateManager;
 import dev.denux.clanmanager.entities.Clan;
 import dev.denux.clanmanager.entities.ClanMember;
@@ -84,4 +85,9 @@ public interface ClanManager {
      * @return The {@link ReverificationStateManager} instance.
      */
     ReverificationStateManager getReverificationStateManager();
+
+    /**
+     * @return The {@link ClanManagerConfig} instance.
+     */
+    ClanManagerConfig getConfig();
 }

@@ -147,4 +147,9 @@ public class ClanManagerImpl implements ClanManager {
     public ReverificationStateManager getReverificationStateManager() {
         return config.getReverificationManager();
     }
+
+    @Override
+    public ClanManagerConfig getConfig() {
+        return config;
+    }
 }
