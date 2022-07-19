@@ -15,7 +15,7 @@ import javax.annotation.Nonnull;
 public class ClanManagerBuilder {
 
     private final ClanManagerConfig config;
-
+    private HikariConfig hConfig = new HikariConfig();
     private ClanManagerBuilder(@Nonnull JDA jda) {
         this.config = new ClanManagerConfig();
         this.config.setJda(jda);
@@ -86,8 +86,34 @@ public class ClanManagerBuilder {
         return this;
     }
 
+    @Nonnull
     public ClanManagerBuilder setOwnSchema(@Nonnull String schema) {
         config.setQueries(schema);
+        return this;
+    }
+
+    /**
+     * Enables the system to use our own H2 Database.
+     * Overrides every jdbcUrl you've maybe set earlier or later.
+     * @see ClanManagerBuilder#setOwnHikariConfig(HikariConfig)
+     */
+    @Nonnull
+    public ClanManagerBuilder enableOwnDatabase() {
+        config.setUseOwnH2Database(true);
+        return this;
+    }
+
+    /**
+     * Enables the system to use your hikari setting with our H2 Database.
+     * This can only be used together whit {@link ClanManagerBuilder#enableOwnDatabase()}.
+     * @param config The HikariConfig instance to use.
+     */
+    @Nonnull
+    public ClanManagerBuilder setOwnHikariConfig(@Nonnull HikariConfig config) {
+        if (!this.config.isUseOwnH2Database()) {
+            throw new IllegalStateException("You can only use this method after calling ClanManagerBuilder#enableOwnDatabase()");
+        }
+        hConfig = config;
         return this;
     }
 
@@ -98,7 +124,12 @@ public class ClanManagerBuilder {
      */
     @Nonnull
     public ClanManager build() throws ReflectiveOperationException {
+        if (config.isUseOwnH2Database()) {
+            new SystemSetup(config).setupH2Database(hConfig);
+        }
+
         if (config.getJda() == null) throw new IllegalStateException("JDA instance is null");
+        if (config.getDataSource() == null) throw new IllegalStateException("DataSource instance is null");
         if (config.getDataSource().getJdbcUrl().isEmpty() || config.getDataSource().getJdbcUrl().isEmpty()) {
             throw new IllegalArgumentException("You need to set a JDBC URL before building the ClanManager!");
         }

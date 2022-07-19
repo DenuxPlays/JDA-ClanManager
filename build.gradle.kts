@@ -40,7 +40,7 @@ repositories {
 
 dependencies {
     //Database stuff
-    //api("com.h2database:h2:2.1.214")
+    api("com.h2database:h2:2.1.214")
     api("com.zaxxer:HikariCP:5.0.1")
     // Quartz scheduler
     api("org.quartz-scheduler:quartz:2.3.2")

@@ -1,7 +1,10 @@
 package dev.denux.clanmanager.core;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import dev.denux.clanmanager.core.features.reverifications.ReverificationStateManager;
 import net.dv8tion.jda.internal.utils.JDALogger;
+import org.h2.tools.Server;
 import org.slf4j.Logger;
 
 import java.sql.Connection;
@@ -29,8 +32,8 @@ public class SystemSetup {
         log.info("Initializing ClanManager...");
 
         if (config.shouldLoadSchema()) {
-            setUpDatabase();
-            log.info("\t[*] Database setup done.");
+            initSchema();
+            log.info("\t[*] Schema init done.");
         }
 
         config.setReverificationManager(new ReverificationStateManager(config));
@@ -40,9 +43,29 @@ public class SystemSetup {
     }
 
     /**
-     * Sets up all the needed tables and checks the general connection to the database.
+     * Set's up the H2 Database.
      */
-    private void setUpDatabase() {
+    public void setupH2Database(HikariConfig hConfig) {
+        Server server;
+        try {
+            server = Server.createTcpServer("-tcpPort", "9123", "-ifNotExists").start();
+        } catch (SQLException exception) {
+            throw new IllegalStateException("Could not start database server.", exception);
+        }
+
+        hConfig.setJdbcUrl("jdbc:h2:tcp://localhost:9123/./clanmanager");
+        config.setDataSource(new HikariDataSource(hConfig));
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            config.getDataSource().close();
+            server.stop();
+        }));
+    }
+
+    /**
+     * Initializes the database schema.
+     */
+    private void initSchema() {
         try(Connection con = config.getDataSource().getConnection()) {
             List<String> queries = Arrays.stream(config.getQueries().split(";")).filter(s -> !s.isEmpty()).collect(Collectors.toList());
             log.debug("\t\t[*] Executing {} queries.", queries.size());
