@@ -95,7 +95,7 @@ public class ClanManagerImpl implements ClanManager {
             int clanId = rs.getInt(1);
             Clan clan = getClan(clanId);
             if (clan == null) throw new ClanManagerException("Clan not found directly after creation");
-            clan.createClanMember(owner.getEffectiveName(), owner.getGuild().getLocale(), owner, true, true);
+            int cmId = clan.createClanMember(owner.getEffectiveName(), owner.getGuild().getLocale(), owner, true, true, true);
             con.close();
             return clanId;
         } catch (SQLException exception) {

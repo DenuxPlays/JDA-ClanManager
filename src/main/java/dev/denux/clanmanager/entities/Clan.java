@@ -158,9 +158,10 @@ public interface Clan {
      * @param member The discord member {@link Member} of the new clan member.
      * @param leaderShipStatus If the new clan member is in a leadership position or not.
      * @param isCoOwner If the new clan member is a co-owner or not.
+     * @param updateRoles True if the roles of the new clan member should be updated.
      * @return The id of the new clan member.
      */
-    long createClanMember(@Nonnull String nickname, @Nonnull DiscordLocale locale, @Nonnull Member member, boolean leaderShipStatus, boolean isCoOwner);
+    int createClanMember(@Nonnull String nickname, @Nonnull DiscordLocale locale, @Nonnull Member member, boolean leaderShipStatus, boolean isCoOwner, boolean updateRoles);
 
     /**
      * Creates a new clan member for this clan.
@@ -169,7 +170,14 @@ public interface Clan {
      * @param member The discord member {@link Member} of the new clan member.
      * @return The id of the new clan member.
      */
-    long createClanMember(@Nonnull String nickname, @Nonnull DiscordLocale locale, @Nonnull Member member);
+    int createClanMember(@Nonnull String nickname, @Nonnull DiscordLocale locale, @Nonnull Member member);
+
+    /**
+     * Deletes a clan member from this clan.
+     * @param clanMember The clan member you want to delete.
+     * @param updateRoles True if the roles of the deleted clan member should be updated.
+     */
+    void deleteClanMember(@Nonnull ClanMember clanMember, boolean updateRoles);
 
     /**
      * Deletes a clan member from this clan.

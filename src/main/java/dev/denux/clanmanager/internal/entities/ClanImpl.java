@@ -5,6 +5,7 @@ import dev.denux.clanmanager.entities.Clan;
 import dev.denux.clanmanager.entities.ClanMember;
 import dev.denux.clanmanager.core.ClanManagerConfig;
 import dev.denux.clanmanager.utils.CMChecks;
+import dev.denux.clanmanager.utils.CMUtils;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -229,7 +230,7 @@ public class ClanImpl implements Clan {
     }
 
     @Override
-    public long createClanMember(@Nonnull String nickname, @Nonnull DiscordLocale locale, @Nonnull Member member, boolean leaderShipStatus, boolean isCoOwner) {
+    public int createClanMember(@Nonnull String nickname, @Nonnull DiscordLocale locale, @Nonnull Member member, boolean leaderShipStatus, boolean isCoOwner, boolean updateRoles) {
         new CMChecks(config).checkClanMemberDuplication(this, member);
         try(Connection con = config.getDataSource().getConnection()) {
             PreparedStatement pstm = con.prepareStatement(
@@ -244,6 +245,9 @@ public class ClanImpl implements Clan {
             pstm.executeUpdate();
             int memberId = pstm.getGeneratedKeys().getInt(1);
             con.close();
+            ClanMember clanMember = getClanMember(memberId);
+            if (updateRoles) new CMUtils().updateMemberRoles(clanMember, true);
+            if (leaderShipStatus && updateRoles) new CMUtils().updateLeadershipRole(clanMember, true);
             return memberId;
         } catch (SQLException exception) {
             log.error("Failed to create clan member.");
@@ -252,20 +256,26 @@ public class ClanImpl implements Clan {
     }
 
     @Override
-    public long createClanMember(@Nonnull String nickname, @Nonnull DiscordLocale locale, @Nonnull Member member) {
-        return createClanMember(nickname, locale, member, false, false);
+    public int createClanMember(@Nonnull String nickname, @Nonnull DiscordLocale locale, @Nonnull Member member) {
+        return createClanMember(nickname, locale, member, false, false, true);
     }
 
     @Override
-    public void deleteClanMember(@Nonnull ClanMember clanMember) {
+    public void deleteClanMember(@Nonnull ClanMember clanMember, boolean updateRoles) {
         try(Connection con = config.getDataSource().getConnection()) {
             PreparedStatement pstm = con.prepareStatement(
                     "DELETE FROM \"clanMember\" WHERE \"id\" = ?");
             pstm.setInt(1, clanMember.getId());
             pstm.executeUpdate();
+            if (updateRoles) new CMUtils().updateMemberRoles(clanMember, false);
         }catch (SQLException exception) {
             log.error("Failed to delete clan member.");
             throw new ClanManagerException(exception);
         }
+    }
+
+    @Override
+    public void deleteClanMember(@NotNull ClanMember clanMember) {
+        deleteClanMember(clanMember, true);
     }
 }
