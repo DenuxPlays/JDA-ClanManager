@@ -9,6 +9,7 @@ import dev.denux.clanmanager.core.ClanManagerConfig;
 import dev.denux.clanmanager.internal.entities.ClanImpl;
 import dev.denux.clanmanager.internal.entities.ClanMemberImpl;
 import dev.denux.clanmanager.utils.CMChecks;
+import dev.denux.clanmanager.utils.CMUtils;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -132,10 +133,16 @@ public class ClanManagerImpl implements ClanManager {
                 return -1;
             }
             int clanId = rs.getInt(1);
+            con.close();
+
             Clan clan = getClan(clanId);
             if (clan == null) throw new ClanManagerException("Clan not found directly after creation");
             int cmId = clan.createClanMember(owner.getEffectiveName(), owner.getGuild().getLocale(), owner, true, true, true);
-            con.close();
+            ClanMember clanMember = getClanMember(cmId);
+            if (clanMember == null) throw new ClanManagerException("Clan member not found directly after creation");
+            new CMUtils().updateMemberRoles(clanMember, true);
+            new CMUtils().updateLeadershipRole(clanMember, true);
+
             return clanId;
         } catch (SQLException exception) {
             log.error("Error while creating clan", exception);
