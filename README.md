@@ -6,7 +6,7 @@ A small system to manage clans, guilds or generally users.\
 Mostly used for some privat projects.
 
 ## Installation
-This version of DIH4JDA **must** be used with the following Version of JDA: [`net.dv8tion:JDA:5.0.0-alpha.15`](https://github.com/DV8FromTheWorld/JDA/releases/tag/v5.0.0-alpha.15)
+This version of the ClanManager **must** be used with the following Version of JDA: [`net.dv8tion:JDA:5.0.0-alpha.16`](https://github.com/DV8FromTheWorld/JDA/releases/tag/v5.0.0-alpha.16)
 
 ### Maven
 
