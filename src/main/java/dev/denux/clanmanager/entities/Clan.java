@@ -184,4 +184,14 @@ public interface Clan {
      * @param clanMember The clan member you want to delete/remove.
      */
     void deleteClanMember(@Nonnull ClanMember clanMember);
+
+    /**
+     * Enables the reverification feature.
+     */
+    void enableReverification();
+
+    /**
+     * Disables the reverification feature.
+     */
+    void disableReverification();
 }

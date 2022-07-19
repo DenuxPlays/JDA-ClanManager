@@ -278,4 +278,29 @@ public class ClanImpl implements Clan {
     public void deleteClanMember(@NotNull ClanMember clanMember) {
         deleteClanMember(clanMember, true);
     }
+
+    @Override
+    public void enableReverification() {
+        try(Connection con = config.getDataSource().getConnection()) {
+            PreparedStatement pstm = con.prepareStatement("INSERT INTO \"reverificationFeature\" (\"clanId\") VALUES (?)");
+            pstm.setInt(1, getId());
+            pstm.executeUpdate();
+        } catch (SQLException exception) {
+            log.error("Failed to enable reverification feature.", exception);
+        }
+        for (ClanMember clanMember : getAllClanMembers()) {
+            config.getReverificationManager().scheduleReverification(clanMember);
+        }
+    }
+
+    @Override
+    public void disableReverification() {
+        try(Connection con = config.getDataSource().getConnection()) {
+            PreparedStatement pstm = con.prepareStatement("DELETE FROM \"reverificationFeature\" WHERE \"clanId\" = ?");
+            pstm.setInt(1, getId());
+            pstm.executeUpdate();
+        } catch (SQLException exception) {
+            log.error("Failed to disable reverification feature.", exception);
+        }
+    }
 }
