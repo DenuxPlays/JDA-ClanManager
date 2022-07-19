@@ -25,7 +25,7 @@ Add the dependency
 <dependency> 
     <groupId>com.github.DenuxPlays</groupId> 
     <artifactId>JDA-ClanManager</artifactId> 
-    <version>1.0.0-alpha.4</version> 
+    <version>1.0.0-alpha.5</version> 
 </dependency>
 ```
 
@@ -43,6 +43,6 @@ Add the dependency
 ```gradle
 dependencies {
     [...]
-    implementation("com.github.DenuxPlays:JDA-ClanManager:1.0.0-alpha.4")
+    implementation("com.github.DenuxPlays:JDA-ClanManager:1.0.0-alpha.5")
 }
 ```
