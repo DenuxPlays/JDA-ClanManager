@@ -17,6 +17,7 @@ public class ReverificationJob extends BasicReverificationJob implements Job {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         ClanManagerConfig config = (ClanManagerConfig) context.get("config");
         ClanMember clanMember = config.getClanManager().getClanMember(Integer.parseInt(context.getJobDetail().getKey().getName()));
+        if (clanMember == null) return;
         try {
             new CMChecks(config).isReverificationEnabled(clanMember.getClan());
         } catch (IllegalArgumentException exception) {
