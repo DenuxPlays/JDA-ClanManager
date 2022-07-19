@@ -45,6 +45,11 @@ public class ClanManagerConfig {
             "CREATE TABLE IF NOT EXISTS \"reverificationFeature\" (\n" +
             "    \"clanId\" INT PRIMARY KEY,\n" +
             "    \"numberOfDays\" SMALLINT NOT NULL DEFAULT 90\n" +
+            ");" +
+            "CREATE TABLE IF NOT EXISTS \"blockedUsers\" (\n" +
+            "    \"clanId\" INT UNIQUE,\n" +
+            "    \"discordUserId\" BIGINT UNIQUE,\n" +
+            "    PRIMARY KEY (\"clanId\", \"discordUserId\")\n" +
             ");";
 
 

@@ -194,4 +194,33 @@ public interface Clan {
      * Disables the reverification feature.
      */
     void disableReverification();
+
+    /**
+     * @return A list of {@link net.dv8tion.jda.api.entities.User} ids that are not allowed to join this clan.
+     */
+    @Nonnull
+    List<Long> getBlockedUserIds();
+
+    /**
+     * @param member The member
+     */
+    boolean isBlock(@Nonnull Member member);
+
+    /**
+     * Adds a member to the clan's blocked list.
+     * @param member The member you want to add to the blocked list.
+     */
+    void addMemberToBlocklist(@Nonnull Member member);
+
+    /**
+     * Removes a member from the clan's blocked list.
+     * @param member The member you want to remove from the blocked list.
+     * @throws IllegalArgumentException If the member is not in the blocked list.
+     */
+    void removeMemberFromBlocklist(@Nonnull Member member) throws IllegalArgumentException;
+
+    /**
+     * Deletes everyone from the clan's blocked list -> clears the list.
+     */
+    void clearBlocklist();
 }

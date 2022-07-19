@@ -232,6 +232,8 @@ public class ClanImpl implements Clan {
     @Override
     public int createClanMember(@Nonnull String nickname, @Nonnull DiscordLocale locale, @Nonnull Member member, boolean leaderShipStatus, boolean isCoOwner, boolean updateRoles) {
         new CMChecks(config).checkClanMemberDuplication(this, member);
+        if (isBlock(member)) throw new IllegalArgumentException("The member is blocked.");
+
         try(Connection con = config.getDataSource().getConnection()) {
             PreparedStatement pstm = con.prepareStatement(
                     "INSERT INTO \"clanMember\" (\"clanId\", \"nickname\", \"locale\", \"discordUserId\", \"leaderShipStatus\", \"coOwnerStatus\") VALUES (?, ?, ?, ?, ?, ?)",
@@ -304,6 +306,76 @@ public class ClanImpl implements Clan {
         }
         for (ClanMember clanMember : getAllClanMembers()) {
             config.getReverificationManager().cancelSchedule(clanMember);
+        }
+    }
+
+    @Override
+    @Nonnull
+    public List<Long> getBlockedUserIds() {
+        List<Long> blockedUserIds = new ArrayList<>();
+        try(Connection con = config.getDataSource().getConnection()) {
+            PreparedStatement pstm = con.prepareStatement("SELECT \"discordUserId\" FROM \"blockedUsers\" WHERE \"clanId\" = ?");
+            pstm.setInt(1, getId());
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                blockedUserIds.add(rs.getLong(1));
+            }
+        } catch (SQLException exception) {
+            log.error("Failed to get blocked user ids.", exception);
+        }
+        return blockedUserIds;
+    }
+
+    @Override
+    public boolean isBlock(@NotNull Member member) {
+        try(Connection con = config.getDataSource().getConnection()) {
+            PreparedStatement pstm = con.prepareStatement("SELECT \"discordUserId\" FROM \"blockedUsers\" WHERE \"clanId\" = ? AND \"discordUserId\" = ?");
+            pstm.setInt(1, getId());
+            pstm.setLong(2, member.getIdLong());
+            ResultSet rs = pstm.executeQuery();
+            boolean isBlocked = rs.next();
+            con.close();
+            return isBlocked;
+        } catch (SQLException exception) {
+            log.error("Failed to check if user is blocked.");
+            throw new ClanManagerException(exception);
+        }
+    }
+
+    @Override
+    public void addMemberToBlocklist(@NotNull Member member) {
+        try(Connection con = config.getDataSource().getConnection()) {
+            PreparedStatement pstm = con.prepareStatement("INSERT INTO \"blockedUsers\" (\"clanId\", \"discordUserId\") VALUES (?, ?)");
+            pstm.setInt(1, getId());
+            pstm.setLong(2, member.getIdLong());
+            pstm.executeUpdate();
+        } catch (SQLException exception) {
+            log.error("Failed to add member to blocklist.", exception);
+        }
+    }
+
+    @Override
+    public void removeMemberFromBlocklist(@NotNull Member member) throws IllegalArgumentException {
+        if (!isBlock(member)) throw new IllegalArgumentException("Member is not blocked.");
+
+        try(Connection con = config.getDataSource().getConnection()) {
+            PreparedStatement pstm = con.prepareStatement("DELETE FROM \"blockedUsers\" WHERE \"clanId\" = ? AND \"discordUserId\" = ?");
+            pstm.setInt(1, getId());
+            pstm.setLong(2, member.getIdLong());
+            pstm.executeUpdate();
+        } catch (SQLException exception) {
+            log.error("Failed to remove member from blocklist.", exception);
+        }
+    }
+
+    @Override
+    public void clearBlocklist() {
+        try(Connection con = config.getDataSource().getConnection()) {
+            PreparedStatement pstm = con.prepareStatement("DELETE FROM \"blockedUsers\" WHERE \"clanId\" = ?");
+            pstm.setInt(1, getId());
+            pstm.executeUpdate();
+        } catch (SQLException exception) {
+            log.error("Failed to clear blocklist.", exception);
         }
     }
 }
