@@ -14,6 +14,7 @@ import net.dv8tion.jda.api.JDA;
 public class ClanManagerConfig {
     private JDA jda;
     private boolean shouldLoadSchema = true;
+    private boolean useOwnH2Database = false;
     private HikariDataSource dataSource;
     private ClanManager clanManager;
     private Class<? extends ClanManager> CMImplementation = ClanManagerImpl.class;
@@ -52,6 +53,14 @@ public class ClanManagerConfig {
             "    PRIMARY KEY (\"clanId\", \"discordUserId\")\n" +
             ");";
 
+
+    public boolean isUseOwnH2Database() {
+        return useOwnH2Database;
+    }
+
+    public void setUseOwnH2Database(boolean useOwnH2Database) {
+        this.useOwnH2Database = useOwnH2Database;
+    }
 
     public Class<? extends BasicReverificationJob> getReverificationJobImpl() {
         return reverificationJobImpl;
