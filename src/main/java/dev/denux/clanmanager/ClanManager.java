@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.List;
 
 /**
  * The core of this manager.
@@ -40,12 +41,28 @@ public interface ClanManager {
     Clan getClanByVerificationCode(@Nonnull String code);
 
     /**
+     * @param guild The guild of the clans.
+     * @return A list of all clans that a registered in the given guild.
+     */
+    @Nonnull
+    List<Clan> getAllClansFromAGuild(@Nonnull Guild guild);
+
+    /**
      * @param id The id of the clan member.
      * @return The {@link ClanMember} with the given id or null.
      * @throws IllegalArgumentException If the clan with the given id does not exist.
      */
     @Nullable
     ClanMember getClanMember(int id);
+
+    /**
+     * Gives you all ClanMembers for the given Discord User.
+     *
+     * @param member The Discord User you want to search after. {@link Member}
+     * @return A List of ClanMember or an empty List if the User is has no ClanMember entry's.
+     */
+    @Nonnull
+    List<ClanMember> getAllClanMembersByDiscordMember(@Nonnull Member member);
 
     /**
      * Creates a new clan with the given attributes.

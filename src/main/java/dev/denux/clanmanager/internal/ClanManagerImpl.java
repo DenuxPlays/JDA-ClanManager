@@ -17,11 +17,14 @@ import net.dv8tion.jda.internal.utils.JDALogger;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClanManagerImpl implements ClanManager {
     private static final Logger log = JDALogger.getLog(ClanManagerImpl.class);
@@ -61,6 +64,23 @@ public class ClanManagerImpl implements ClanManager {
         }
     }
 
+    @NotNull
+    @Override
+    public List<Clan> getAllClansFromAGuild(@NotNull Guild guild) {
+        List<Clan> clans = new ArrayList<>();
+        try(Connection con = config.getDataSource().getConnection()) {
+            PreparedStatement pstm = con.prepareStatement("SELECT \"id\" FROM \"clan\" WHERE \"discordGuildId\" = ?");
+            pstm.setLong(1, guild.getIdLong());
+            ResultSet resultSet = pstm.executeQuery();
+            while (resultSet.next()) {
+                clans.add(getClan(resultSet.getInt(1)));
+            }
+        } catch (SQLException exception) {
+            log.error("Error while getting all clans from a guild", exception);
+        }
+        return clans;
+    }
+
     @Override
     @Nullable
     public ClanMember getClanMember(int id) {
@@ -71,6 +91,25 @@ public class ClanManagerImpl implements ClanManager {
             return null;
         }
         return new ClanMemberImpl(config, id);
+    }
+
+    @Override
+    @Nonnull
+    public List<ClanMember> getAllClanMembersByDiscordMember(@NotNull Member member) {
+        List<ClanMember> clanMembers = new ArrayList<>();
+        try(Connection con = config.getDataSource().getConnection()) {
+            PreparedStatement pstm = con.prepareStatement(
+                    "SELECT DISTINCT \"clanMember\".\"id\" FROM \"clanMember\", \"clan\" WHERE \"clanMember\".\"discordUserId\" = ? AND \"clan\".\"discordGuildId\" = ?", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            pstm.setLong(1, member.getIdLong());
+            pstm.setLong(2, member.getGuild().getIdLong());
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                clanMembers.add(config.getClanManager().getClanMember(rs.getInt(1)));
+            }
+        } catch (SQLException exception) {
+            log.error("Error while getting all clan members by discord member", exception);
+        }
+        return clanMembers;
     }
 
     @Override
