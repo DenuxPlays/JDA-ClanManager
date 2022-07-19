@@ -1,5 +1,6 @@
 package dev.denux.clanmanager;
 
+import dev.denux.clanmanager.core.reverifications.ReverificationStateManager;
 import dev.denux.clanmanager.entities.Clan;
 import dev.denux.clanmanager.entities.ClanMember;
 import net.dv8tion.jda.api.entities.Guild;
@@ -61,4 +62,9 @@ public interface ClanManager {
      */
     int createClan(@Nonnull String name, @Nonnull String tag, @Nonnull String verificationCode, @Nonnull Guild guild, @Nonnull Member owner,
                    @Nonnull TextChannel channel, @Nonnull Role leadershipRole, @Nonnull Role memberRole);
+
+    /**
+     * @return The {@link ReverificationStateManager} instance.
+     */
+    ReverificationStateManager getReverificationStateManager();
 }

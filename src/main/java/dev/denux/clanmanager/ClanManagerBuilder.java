@@ -4,6 +4,8 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import dev.denux.clanmanager.core.ClanManagerConfig;
 import dev.denux.clanmanager.core.SystemSetup;
+import dev.denux.clanmanager.core.reverifications.BasicReverificationJob;
+import dev.denux.clanmanager.entities.ClanMember;
 import net.dv8tion.jda.api.JDA;
 
 import javax.annotation.Nonnull;
@@ -61,6 +63,16 @@ public class ClanManagerBuilder {
     @Nonnull
     public ClanManagerBuilder setClanManagerImplementation(@Nonnull Class<? extends ClanManager> CMImplementation) {
         config.setCMImplementation(CMImplementation);
+        return this;
+    }
+
+    /**
+     * Sets a new implementation for the {@link BasicReverificationJob} interface.
+     * @param reverificationJobImpl The implementation to use.
+     */
+    @Nonnull
+    public ClanManagerBuilder setReverificationJobImplementation(@Nonnull Class<? extends BasicReverificationJob> reverificationJobImpl) {
+        config.setReverificationJobImpl(reverificationJobImpl);
         return this;
     }
 

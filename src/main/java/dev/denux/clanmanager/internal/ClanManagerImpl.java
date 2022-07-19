@@ -2,6 +2,7 @@ package dev.denux.clanmanager.internal;
 
 import dev.denux.clanmanager.ClanManager;
 import dev.denux.clanmanager.core.exceptions.ClanManagerException;
+import dev.denux.clanmanager.core.reverifications.ReverificationStateManager;
 import dev.denux.clanmanager.entities.Clan;
 import dev.denux.clanmanager.entities.ClanMember;
 import dev.denux.clanmanager.core.ClanManagerConfig;
@@ -95,10 +96,16 @@ public class ClanManagerImpl implements ClanManager {
             Clan clan = getClan(clanId);
             if (clan == null) throw new ClanManagerException("Clan not found directly after creation");
             clan.createClanMember(owner.getEffectiveName(), owner.getGuild().getLocale(), owner, true, true);
+            con.close();
             return clanId;
         } catch (SQLException exception) {
             log.error("Error while creating clan", exception);
         }
         return -1;
+    }
+
+    @Override
+    public ReverificationStateManager getReverificationStateManager() {
+        return config.getReverificationManager();
     }
 }

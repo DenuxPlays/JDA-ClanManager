@@ -2,6 +2,9 @@ package dev.denux.clanmanager.core;
 
 import com.zaxxer.hikari.HikariDataSource;
 import dev.denux.clanmanager.ClanManager;
+import dev.denux.clanmanager.core.reverifications.BasicReverificationJob;
+import dev.denux.clanmanager.core.reverifications.ReverificationJob;
+import dev.denux.clanmanager.core.reverifications.ReverificationStateManager;
 import dev.denux.clanmanager.internal.ClanManagerImpl;
 import net.dv8tion.jda.api.JDA;
 
@@ -14,6 +17,8 @@ public class ClanManagerConfig {
     private HikariDataSource dataSource;
     private ClanManager clanManager;
     private Class<? extends ClanManager> CMImplementation = ClanManagerImpl.class;
+    private Class<? extends BasicReverificationJob> reverificationJobImpl = ReverificationJob.class;
+    private ReverificationStateManager reverificationManager;
     private String queries = "CREATE TABLE IF NOT EXISTS \"clan\" (\n" +
             "    \"id\" SERIAL PRIMARY KEY,\n" +
             "    \"verificationCode\" TEXT NOT NULL UNIQUE,\n" +
@@ -41,6 +46,23 @@ public class ClanManagerConfig {
             "    \"clanId\" INT PRIMARY KEY,\n" +
             "    \"numberOfDays\" SMALLINT NOT NULL DEFAULT 90\n" +
             ");";
+
+
+    public Class<? extends BasicReverificationJob> getReverificationJobImpl() {
+        return reverificationJobImpl;
+    }
+
+    public void setReverificationJobImpl(Class<? extends BasicReverificationJob> reverificationJobImpl) {
+        this.reverificationJobImpl = reverificationJobImpl;
+    }
+
+    public ReverificationStateManager getReverificationManager() {
+        return reverificationManager;
+    }
+
+    public void setReverificationManager(ReverificationStateManager reverificationManager) {
+        this.reverificationManager = reverificationManager;
+    }
 
     public String getQueries() {
         return queries;

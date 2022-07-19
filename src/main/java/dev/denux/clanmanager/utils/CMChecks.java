@@ -29,6 +29,24 @@ public class CMChecks {
     }
 
     /**
+     * @param clan The clan to check.
+     * @return True if reverification feature is enabled for the clan.
+     */
+    public boolean isReverificationEnabled(@Nonnull Clan clan) {
+        try(Connection con = config.getDataSource().getConnection()) {
+            PreparedStatement pstm = con.prepareStatement("SELECT \"numberOfDays\" FROM \"reverificationFeature\" WHERE \"clanId\" = ?", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            pstm.setInt(1, clan.getId());
+            ResultSet rs = pstm.executeQuery();
+            boolean result = rs.first();
+            con.close();
+            return result;
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
      * Checks all the attributes of a Clan for validation.
      * @param name The name of the Clan.
      * @param tag The tag of the Clan.

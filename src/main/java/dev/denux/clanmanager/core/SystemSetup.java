@@ -1,10 +1,9 @@
 package dev.denux.clanmanager.core;
 
+import dev.denux.clanmanager.core.reverifications.ReverificationStateManager;
 import net.dv8tion.jda.internal.utils.JDALogger;
 import org.slf4j.Logger;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -33,6 +32,9 @@ public class SystemSetup {
             setUpDatabase();
             log.info("\t[*] Database setup done.");
         }
+
+        config.setReverificationManager(new ReverificationStateManager(config));
+        log.info("\t[*] Reverification setup done.");
 
         log.info("Finished initializing ClanManager.");
     }
