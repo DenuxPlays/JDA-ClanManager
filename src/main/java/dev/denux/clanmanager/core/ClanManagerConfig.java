@@ -2,9 +2,9 @@ package dev.denux.clanmanager.core;
 
 import com.zaxxer.hikari.HikariDataSource;
 import dev.denux.clanmanager.ClanManager;
-import dev.denux.clanmanager.core.reverifications.BasicReverificationJob;
-import dev.denux.clanmanager.core.reverifications.ReverificationJob;
-import dev.denux.clanmanager.core.reverifications.ReverificationStateManager;
+import dev.denux.clanmanager.core.features.reverifications.BasicReverificationJob;
+import dev.denux.clanmanager.core.features.reverifications.ReverificationJob;
+import dev.denux.clanmanager.core.features.reverifications.ReverificationStateManager;
 import dev.denux.clanmanager.internal.ClanManagerImpl;
 import net.dv8tion.jda.api.JDA;
 

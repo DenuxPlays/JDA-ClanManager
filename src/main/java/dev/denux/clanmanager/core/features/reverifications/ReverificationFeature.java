@@ -1,4 +1,4 @@
-package dev.denux.clanmanager.core.reverifications;
+package dev.denux.clanmanager.core.features.reverifications;
 
 import dev.denux.clanmanager.core.ClanManagerConfig;
 import dev.denux.clanmanager.entities.Clan;

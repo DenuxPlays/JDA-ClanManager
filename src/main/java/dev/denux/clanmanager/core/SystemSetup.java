@@ -1,6 +1,6 @@
 package dev.denux.clanmanager.core;
 
-import dev.denux.clanmanager.core.reverifications.ReverificationStateManager;
+import dev.denux.clanmanager.core.features.reverifications.ReverificationStateManager;
 import net.dv8tion.jda.internal.utils.JDALogger;
 import org.slf4j.Logger;
 

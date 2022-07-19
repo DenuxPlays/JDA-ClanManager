@@ -4,8 +4,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import dev.denux.clanmanager.core.ClanManagerConfig;
 import dev.denux.clanmanager.core.SystemSetup;
-import dev.denux.clanmanager.core.reverifications.BasicReverificationJob;
-import dev.denux.clanmanager.entities.ClanMember;
+import dev.denux.clanmanager.core.features.reverifications.BasicReverificationJob;
 import net.dv8tion.jda.api.JDA;
 
 import javax.annotation.Nonnull;

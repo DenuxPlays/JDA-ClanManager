@@ -1,6 +1,6 @@
 package dev.denux.clanmanager;
 
-import dev.denux.clanmanager.core.reverifications.ReverificationStateManager;
+import dev.denux.clanmanager.core.features.reverifications.ReverificationStateManager;
 import dev.denux.clanmanager.entities.Clan;
 import dev.denux.clanmanager.entities.ClanMember;
 import net.dv8tion.jda.api.entities.Guild;
