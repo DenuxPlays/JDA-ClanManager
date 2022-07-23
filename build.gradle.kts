@@ -45,7 +45,7 @@ dependencies {
     // Quartz scheduler
     api("org.quartz-scheduler:quartz:2.3.2")
 
-    api("net.dv8tion:JDA:5.0.0-alpha.16") {
+    api("net.dv8tion:JDA:5.0.0-alpha.17") {
         exclude( module = "opus-java")
     }
 
