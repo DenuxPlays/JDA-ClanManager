@@ -10,7 +10,6 @@ import net.dv8tion.jda.api.interactions.DiscordLocale;
 
 import javax.annotation.Nonnull;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -202,9 +201,11 @@ public interface Clan {
     List<Long> getBlockedUserIds();
 
     /**
+     * Says if the member is blocked for this clan or not.
      * @param member The member
+     * @return True if the member is blocked.
      */
-    boolean isBlock(@Nonnull Member member);
+    boolean isBlocked(@Nonnull Member member);
 
     /**
      * Adds a member to the clan's blocked list.

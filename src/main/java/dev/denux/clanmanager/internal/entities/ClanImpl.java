@@ -232,7 +232,7 @@ public class ClanImpl implements Clan {
     @Override
     public int createClanMember(@Nonnull String nickname, @Nonnull DiscordLocale locale, @Nonnull Member member, boolean leaderShipStatus, boolean isCoOwner, boolean updateRoles) {
         new CMChecks(config).checkClanMemberDuplication(this, member);
-        if (isBlock(member)) throw new IllegalArgumentException("The member is blocked.");
+        if (isBlocked(member)) throw new IllegalArgumentException("The member is blocked.");
 
         try(Connection con = config.getDataSource().getConnection()) {
             PreparedStatement pstm = con.prepareStatement(
@@ -329,7 +329,7 @@ public class ClanImpl implements Clan {
     }
 
     @Override
-    public boolean isBlock(@NotNull Member member) {
+    public boolean isBlocked(@NotNull Member member) {
         try(Connection con = config.getDataSource().getConnection()) {
             PreparedStatement pstm = con.prepareStatement("SELECT \"discordUserId\" FROM \"blockedUsers\" WHERE \"clanId\" = ? AND \"discordUserId\" = ?");
             pstm.setInt(1, getId());
@@ -358,7 +358,7 @@ public class ClanImpl implements Clan {
 
     @Override
     public void removeMemberFromBlocklist(@NotNull Member member) throws IllegalArgumentException {
-        if (!isBlock(member)) throw new IllegalArgumentException("Member is not blocked.");
+        if (!isBlocked(member)) throw new IllegalArgumentException("Member is not blocked.");
 
         try(Connection con = config.getDataSource().getConnection()) {
             PreparedStatement pstm = con.prepareStatement("DELETE FROM \"blockedUsers\" WHERE \"clanId\" = ? AND \"discordUserId\" = ?");
