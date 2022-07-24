@@ -15,7 +15,6 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.internal.utils.JDALogger;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
@@ -32,14 +31,13 @@ public class ClanManagerImpl implements ClanManager {
 
     private final ClanManagerConfig config;
 
-    public ClanManagerImpl(ClanManagerConfig config) {
+    public ClanManagerImpl(@Nonnull ClanManagerConfig config) {
         this.config = config;
         config.setClanManager(this);
     }
 
     @Override
-    @Nullable
-    public Clan getClan(int id) {
+    public @Nullable Clan getClan(int id) {
         try {
             new CMChecks(config).checkClan(id);
         } catch (IllegalArgumentException e) {
@@ -50,8 +48,7 @@ public class ClanManagerImpl implements ClanManager {
     }
 
     @Override
-    @Nullable
-    public Clan getClanByVerificationCode(@NotNull String code) {
+    public @Nullable Clan getClanByVerificationCode(@Nonnull String code) {
         try(Connection con = config.getDataSource().getConnection()) {
             PreparedStatement pstm = con.prepareStatement("SELECT \"id\" FROM \"clan\" WHERE \"verificationCode\" = ?");
             pstm.setString(1, code);
@@ -66,9 +63,8 @@ public class ClanManagerImpl implements ClanManager {
         }
     }
 
-    @NotNull
     @Override
-    public List<Clan> getAllClansFromAGuild(@NotNull Guild guild) {
+    public @Nonnull List<Clan> getAllClansFromAGuild(@Nonnull Guild guild) {
         List<Clan> clans = new ArrayList<>();
         try(Connection con = config.getDataSource().getConnection()) {
             PreparedStatement pstm = con.prepareStatement("SELECT \"id\" FROM \"clan\" WHERE \"discordGuildId\" = ?");
@@ -84,8 +80,7 @@ public class ClanManagerImpl implements ClanManager {
     }
 
     @Override
-    @Nullable
-    public ClanMember getClanMember(int id) {
+    public @Nullable ClanMember getClanMember(int id) {
         try {
             new CMChecks(config).checkClanMember(id);
         } catch (IllegalArgumentException e) {
@@ -96,8 +91,7 @@ public class ClanManagerImpl implements ClanManager {
     }
 
     @Override
-    @Nonnull
-    public List<ClanMember> getAllClanMembersByDiscordMember(@NotNull Member member) {
+    public @Nonnull List<ClanMember> getAllClanMembersByDiscordMember(@Nonnull Member member) {
         List<ClanMember> clanMembers = new ArrayList<>();
         try(Connection con = config.getDataSource().getConnection()) {
             PreparedStatement pstm = con.prepareStatement(
@@ -115,7 +109,7 @@ public class ClanManagerImpl implements ClanManager {
     }
 
     @Override
-    public int createClan(@NotNull String name, @NotNull String tag, @NotNull String verificationCode, @NotNull Guild guild, @NotNull Member owner, @NotNull TextChannel channel, @NotNull Role leadershipRole, @NotNull Role memberRole) {
+    public int createClan(@Nonnull String name, @Nonnull String tag, @Nonnull String verificationCode, @Nonnull Guild guild, @Nonnull Member owner, @Nonnull TextChannel channel, @Nonnull Role leadershipRole, @Nonnull Role memberRole) {
         new CMChecks(config).checkClanBeforeCreation(name, tag, verificationCode, guild, owner, channel, leadershipRole, memberRole);
         try(Connection con = config.getDataSource().getConnection()) {
             PreparedStatement pstm = con.prepareStatement(
@@ -152,7 +146,7 @@ public class ClanManagerImpl implements ClanManager {
     }
 
     @Override
-    public void deleteClan(@NotNull Clan clan) {
+    public void deleteClan(@Nonnull Clan clan) {
         int clanId = clan.getId();
         try(Connection con = config.getDataSource().getConnection()) {
             PreparedStatement pstm = con.prepareStatement("DELETE FROM \"clan\" WHERE \"id\" = ?");
@@ -172,12 +166,12 @@ public class ClanManagerImpl implements ClanManager {
     }
 
     @Override
-    public ReverificationStateManager getReverificationStateManager() {
+    public @Nonnull ReverificationStateManager getReverificationStateManager() {
         return config.getReverificationManager();
     }
 
     @Override
-    public ClanManagerConfig getConfig() {
+    public @Nonnull ClanManagerConfig getConfig() {
         return config;
     }
 }

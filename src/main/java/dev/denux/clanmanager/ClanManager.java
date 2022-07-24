@@ -31,30 +31,26 @@ public interface ClanManager {
      * @param id The id of the clan.
      * @return The {@link Clan} with the given id or null.
      */
-    @Nullable
-    Clan getClan(int id);
+    @Nullable Clan getClan(int id);
 
     /**
      * @param code The code of the clan.
      * @return The {@link Clan} with the given code or null.
      */
-    @Nullable
-    Clan getClanByVerificationCode(@Nonnull String code);
+    @Nullable Clan getClanByVerificationCode(@Nonnull String code);
 
     /**
      * @param guild The guild of the clans.
      * @return A list of all clans that a registered in the given guild.
      */
-    @Nonnull
-    List<Clan> getAllClansFromAGuild(@Nonnull Guild guild);
+    @Nonnull List<Clan> getAllClansFromAGuild(@Nonnull Guild guild);
 
     /**
      * @param id The id of the clan member.
      * @return The {@link ClanMember} with the given id or null.
      * @throws IllegalArgumentException If the clan with the given id does not exist.
      */
-    @Nullable
-    ClanMember getClanMember(int id);
+    @Nullable ClanMember getClanMember(int id);
 
     /**
      * Gives you all ClanMembers for the given Discord User.
@@ -62,8 +58,7 @@ public interface ClanManager {
      * @param member The Discord User you want to search after. {@link Member}
      * @return A List of ClanMember or an empty List if the User is has no ClanMember entry's.
      */
-    @Nonnull
-    List<ClanMember> getAllClanMembersByDiscordMember(@Nonnull Member member);
+    @Nonnull List<ClanMember> getAllClanMembersByDiscordMember(@Nonnull Member member);
 
     /**
      * Creates a new clan with the given attributes.
@@ -90,10 +85,10 @@ public interface ClanManager {
     /**
      * @return The {@link ReverificationStateManager} instance.
      */
-    ReverificationStateManager getReverificationStateManager();
+    @Nonnull ReverificationStateManager getReverificationStateManager();
 
     /**
      * @return The {@link ClanManagerConfig} instance.
      */
-    ClanManagerConfig getConfig();
+    @Nonnull ClanManagerConfig getConfig();
 }
