@@ -54,6 +54,7 @@ public class ClanManagerImpl implements ClanManager {
     public Clan getClanByVerificationCode(@NotNull String code) {
         try(Connection con = config.getDataSource().getConnection()) {
             PreparedStatement pstm = con.prepareStatement("SELECT \"id\" FROM \"clan\" WHERE \"verificationCode\" = ?");
+            pstm.setString(1, code);
             ResultSet rs = pstm.executeQuery();
             if(!rs.next()) {
                 return null;
