@@ -27,7 +27,7 @@ public class ClanManagerConfig {
             "    \"tag\" TEXT NOT NULL,\n" +
             "    \"discordGuildId\" BIGINT NOT NULL,\n" +
             "    \"ownerId\" BIGINT NOT NULL,\n" +
-            "    \"leaderShipRoleId\" INT NOT NULL,\n" +
+            "    \"leaderShipRoleId\" BIGINT NOT NULL,\n" +
             "    \"memberRoleId\" BIGINT NOT NULL,\n" +
             "    \"discordChannelId\" BIGINT NOT NULL\n" +
             ");\n" +
@@ -46,7 +46,8 @@ public class ClanManagerConfig {
             "CREATE TABLE IF NOT EXISTS \"reverificationFeature\" (\n" +
             "    \"clanId\" INT PRIMARY KEY,\n" +
             "    \"numberOfDays\" SMALLINT NOT NULL DEFAULT 90\n" +
-            ");" +
+            ");\n" +
+            "\n" +
             "CREATE TABLE IF NOT EXISTS \"blockedUsers\" (\n" +
             "    \"clanId\" INT UNIQUE,\n" +
             "    \"discordUserId\" BIGINT UNIQUE,\n" +
