@@ -245,7 +245,9 @@ public class ClanImpl implements Clan {
             pstm.setBoolean(5, leaderShipStatus);
             pstm.setBoolean(6, isCoOwner);
             pstm.executeUpdate();
-            int memberId = pstm.getGeneratedKeys().getInt(1);
+            ResultSet rs = pstm.getGeneratedKeys();
+            rs.next();
+            int memberId = rs.getInt(1);
             con.close();
             ClanMember clanMember = getClanMember(memberId);
             if (updateRoles) new CMUtils().updateMemberRoles(clanMember, true);
