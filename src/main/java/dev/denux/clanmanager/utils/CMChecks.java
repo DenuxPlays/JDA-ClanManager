@@ -7,7 +7,6 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.internal.utils.JDALogger;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
@@ -57,7 +56,7 @@ public class CMChecks {
      * @param leadershipRole The Role the Clan leadership is in.
      * @param memberRole The Role the Clan members are in.
      */
-    public void checkClanBeforeCreation(@NotNull String name, @NotNull String tag, @NotNull String verificationCode, @NotNull Guild guild, @NotNull Member owner, @NotNull TextChannel channel, @NotNull Role leadershipRole, @NotNull Role memberRole) {
+    public void checkClanBeforeCreation(@Nonnull String name, @Nonnull String tag, @Nonnull String verificationCode, @Nonnull Guild guild, @Nonnull Member owner, @Nonnull TextChannel channel, @Nonnull Role leadershipRole, @Nonnull Role memberRole) {
         if (config.getClanManager().getClanByVerificationCode(verificationCode) != null) throw new IllegalArgumentException("Clan with the given code already exists.");
         if (name.isEmpty() || name.isBlank()) throw new IllegalArgumentException("Clan name cannot be empty.");
         if (tag.isEmpty() || tag.isBlank()) throw new IllegalArgumentException("Clan tag cannot be empty.");

@@ -3,8 +3,8 @@ package dev.denux.clanmanager.entities;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.interactions.DiscordLocale;
 
+import javax.annotation.Nonnull;
 import java.sql.Timestamp;
-import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -31,7 +31,7 @@ public interface ClanMember {
      *
      * @param verificationDate The new date when the clan member joined the clan.
      */
-    void setVerificationDate(Timestamp verificationDate);
+    void setVerificationDate(@Nonnull Timestamp verificationDate);
 
     /**
      * @return The nickname of the clan member.
@@ -41,7 +41,7 @@ public interface ClanMember {
     /**
      * @param nickname The new nickname of the clan member.
      */
-    void setNickname(String nickname);
+    void setNickname(@Nonnull String nickname);
 
     /**
      * @return The true if the clan member has a leadership position.
@@ -77,7 +77,7 @@ public interface ClanMember {
     /**
      * @param locale The new locale of the clan member.
      */
-    void setLocale(DiscordLocale locale);
+    void setLocale(@Nonnull DiscordLocale locale);
 
     /**
      * @return The id of the clan the member is in.
@@ -108,5 +108,5 @@ public interface ClanMember {
     /**
      * @param member The new member {@link net.dv8tion.jda.api.entities.Member} of the clan member.
      */
-    void setDiscordMember(Member member);
+    void setDiscordMember(@Nonnull Member member);
 }

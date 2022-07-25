@@ -7,6 +7,7 @@ import net.dv8tion.jda.internal.utils.JDALogger;
 import org.h2.tools.Server;
 import org.slf4j.Logger;
 
+import javax.annotation.Nonnull;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 public class SystemSetup {
     private final ClanManagerConfig config;
 
-    public SystemSetup(ClanManagerConfig config) {
+    public SystemSetup(@Nonnull ClanManagerConfig config) {
         this.config = config;
     }
 
@@ -45,7 +46,7 @@ public class SystemSetup {
     /**
      * Set's up the H2 Database.
      */
-    public void setupH2Database(HikariConfig hConfig) {
+    public void setupH2Database(@Nonnull HikariConfig hConfig) {
         Server server;
         try {
             server = Server.createTcpServer("-tcpPort", "9123", "-ifNotExists").start();

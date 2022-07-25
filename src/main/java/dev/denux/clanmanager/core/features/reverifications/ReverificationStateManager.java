@@ -11,6 +11,7 @@ import org.quartz.Trigger;
 import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 
+import javax.annotation.Nonnull;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,7 +34,7 @@ public class ReverificationStateManager {
     private Scheduler scheduler;
     private final ClanManagerConfig config;
 
-    public ReverificationStateManager(ClanManagerConfig config) {
+    public ReverificationStateManager(@Nonnull ClanManagerConfig config) {
         this.config = config;
         try {
             scheduler = new StdSchedulerFactory().getScheduler();
@@ -64,7 +65,7 @@ public class ReverificationStateManager {
      * Schedules a clan member for reverification.
      * @param clanMember The clan member to schedule.
      */
-    public void  scheduleReverification(ClanMember clanMember) {
+    public void  scheduleReverification(@Nonnull ClanMember clanMember) {
         ReverificationFeature feature;
         try {
             feature = new ReverificationFeature(clanMember.getClan(), config);
@@ -93,7 +94,7 @@ public class ReverificationStateManager {
      * Cancels the reverification of a clan member.
      * @param clanMember The clan member to cancel.
      */
-    public void cancelSchedule(ClanMember clanMember) {
+    public void cancelSchedule(@Nonnull ClanMember clanMember) {
         try {
             if (!scheduler.checkExists(JobKey.jobKey(String.valueOf(clanMember.getId())))) return;
             scheduler.deleteJob(JobKey.jobKey(String.valueOf(clanMember.getId())));

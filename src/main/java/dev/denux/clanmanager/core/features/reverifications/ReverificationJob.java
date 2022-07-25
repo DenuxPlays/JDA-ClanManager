@@ -4,13 +4,14 @@ import dev.denux.clanmanager.core.ClanManagerConfig;
 import dev.denux.clanmanager.entities.ClanMember;
 import dev.denux.clanmanager.utils.CMChecks;
 import net.dv8tion.jda.internal.utils.JDALogger;
-import org.jetbrains.annotations.NotNull;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 
-public class ReverificationJob extends BasicReverificationJob implements Job {
+import javax.annotation.Nonnull;
+
+public class ReverificationJob implements Job, BasicReverificationJob {
     private static final Logger log = JDALogger.getLog(ReverificationFeature.class);
 
     @Override
@@ -32,7 +33,7 @@ public class ReverificationJob extends BasicReverificationJob implements Job {
     }
 
     @Override
-    public void executeJob(@NotNull ClanManagerConfig config, @NotNull ClanMember clanMember) {
+    public void executeJob(@Nonnull ClanManagerConfig config, @Nonnull ClanMember clanMember) {
         clanMember.retrieveDiscordMember().thenAccept(m ->
             m.getUser().openPrivateChannel().queue(c -> c.sendMessage(String.format("Pleas e verify yourself again for the clan: `%s`", clanMember.getClan().getId())).queue())
         );

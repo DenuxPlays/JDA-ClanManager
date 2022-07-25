@@ -12,7 +12,6 @@ import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.interactions.DiscordLocale;
 import net.dv8tion.jda.internal.utils.JDALogger;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
@@ -42,7 +41,7 @@ public class ClanImpl implements Clan {
      * @param key The column name.
      * @return Returns null if there is an issue with the database.
      */
-    private <T> T get(@NotNull String key, @NotNull Class<T> type) {
+    private <T> T get(@Nonnull String key, @Nonnull Class<T> type) {
         try(Connection con = config.getDataSource().getConnection()) {
             PreparedStatement pstm = con.prepareStatement(
                     String.format("SELECT \"%s\" FROM \"clan\" WHERE \"id\" = ?", key));
@@ -63,7 +62,7 @@ public class ClanImpl implements Clan {
      * @param key The column name.
      * @param value The value to set.
      */
-    private void set(String key, Object value) {
+    private void set(@Nonnull String key, @Nonnull Object value) {
         try(Connection con = config.getDataSource().getConnection()) {
             PreparedStatement pstm = con.prepareStatement(
                     String.format("UPDATE \"clan\" SET \"%s\" = ? WHERE \"id\" = ?", key));
@@ -279,7 +278,7 @@ public class ClanImpl implements Clan {
     }
 
     @Override
-    public void deleteClanMember(@NotNull ClanMember clanMember) {
+    public void deleteClanMember(@Nonnull ClanMember clanMember) {
         deleteClanMember(clanMember, true);
     }
 
@@ -334,7 +333,7 @@ public class ClanImpl implements Clan {
     }
 
     @Override
-    public boolean isBlocked(@NotNull Member member) {
+    public boolean isBlocked(@Nonnull Member member) {
         try(Connection con = config.getDataSource().getConnection()) {
             PreparedStatement pstm = con.prepareStatement("SELECT \"discordUserId\" FROM \"blockedUsers\" WHERE \"clanId\" = ? AND \"discordUserId\" = ?");
             pstm.setInt(1, getId());
@@ -350,7 +349,7 @@ public class ClanImpl implements Clan {
     }
 
     @Override
-    public void addMemberToBlocklist(@NotNull Member member) {
+    public void addMemberToBlocklist(@Nonnull Member member) {
         try(Connection con = config.getDataSource().getConnection()) {
             PreparedStatement pstm = con.prepareStatement("INSERT INTO \"blockedUsers\" (\"clanId\", \"discordUserId\") VALUES (?, ?)");
             pstm.setInt(1, getId());
@@ -362,7 +361,7 @@ public class ClanImpl implements Clan {
     }
 
     @Override
-    public void removeMemberFromBlocklist(@NotNull Member member) throws IllegalArgumentException {
+    public void removeMemberFromBlocklist(@Nonnull Member member) throws IllegalArgumentException {
         if (!isBlocked(member)) throw new IllegalArgumentException("Member is not blocked.");
 
         try(Connection con = config.getDataSource().getConnection()) {

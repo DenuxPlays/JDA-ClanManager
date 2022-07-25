@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.interactions.DiscordLocale;
 import net.dv8tion.jda.internal.utils.JDALogger;
 import org.slf4j.Logger;
 
+import javax.annotation.Nonnull;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -81,7 +82,7 @@ public class ClanMemberImpl implements ClanMember {
     }
 
     @Override
-    public void setVerificationDate(Timestamp verificationDate) {
+    public void setVerificationDate(@Nonnull Timestamp verificationDate) {
         set("verificationTime", verificationDate);
     }
 
@@ -91,7 +92,7 @@ public class ClanMemberImpl implements ClanMember {
     }
 
     @Override
-    public void setNickname(String nickname) {
+    public void setNickname(@Nonnull String nickname) {
         set("nickname", nickname);
     }
 

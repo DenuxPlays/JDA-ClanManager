@@ -3,11 +3,10 @@ package dev.denux.clanmanager.core.features.reverifications;
 import dev.denux.clanmanager.core.ClanManagerConfig;
 import dev.denux.clanmanager.entities.Clan;
 import net.dv8tion.jda.internal.utils.JDALogger;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,7 +24,7 @@ public class ReverificationFeature {
         this.config = config;
     }
 
-    public Clan getClan() {
+    public @Nonnull Clan getClan() {
         return clan;
     }
 
@@ -34,8 +33,7 @@ public class ReverificationFeature {
      * @param key The column name.
      * @return Returns null if there is an issue with the database.
      */
-    @Nullable
-    private <T> T get(@NotNull String key, @NotNull Class<T> type) {
+    private @Nullable <T> T get(@Nonnull String key, @Nonnull Class<T> type) {
         try(Connection con = config.getDataSource().getConnection()) {
             PreparedStatement pstm = con.prepareStatement(
                     String.format("SELECT \"%s\" FROM \"reverificationFeature\" WHERE \"clanId\" = ?", key));
@@ -56,7 +54,7 @@ public class ReverificationFeature {
      * @param key The column name.
      * @param value The value to set.
      */
-    private void set(String key, Object value) {
+    private void set(@Nonnull String key, @Nonnull Object value) {
         try(Connection con = config.getDataSource().getConnection()) {
             PreparedStatement pstm = con.prepareStatement(
                     String.format("UPDATE \"reverificationFeature\" SET \"%s\" = ? WHERE \"clanId\" = ?", key));

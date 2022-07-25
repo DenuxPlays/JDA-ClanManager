@@ -5,7 +5,7 @@ import dev.denux.clanmanager.entities.ClanMember;
 
 import javax.annotation.Nonnull;
 
-public abstract class BasicReverificationJob {
+public interface BasicReverificationJob {
 
-    public abstract void executeJob(@Nonnull ClanManagerConfig config, @Nonnull ClanMember clanMember);
+    default void executeJob(@Nonnull ClanManagerConfig config, @Nonnull ClanMember clanMember) {}
 }
