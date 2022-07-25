@@ -48,7 +48,6 @@ public interface ClanManager {
     /**
      * @param id The id of the clan member.
      * @return The {@link ClanMember} with the given id or null.
-     * @throws IllegalArgumentException If the clan with the given id does not exist.
      */
     @Nullable ClanMember getClanMember(int id);
 
