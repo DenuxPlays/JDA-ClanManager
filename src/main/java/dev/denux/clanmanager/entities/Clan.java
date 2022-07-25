@@ -195,6 +195,11 @@ public interface Clan {
     void disableReverification();
 
     /**
+     * @return True if the reverification feature is enabled.
+     */
+    boolean isReverificationEnabled();
+
+    /**
      * @return A list of {@link net.dv8tion.jda.api.entities.User} ids that are not allowed to join this clan.
      */
     @Nonnull

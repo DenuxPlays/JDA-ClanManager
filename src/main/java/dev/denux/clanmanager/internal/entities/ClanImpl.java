@@ -312,6 +312,11 @@ public class ClanImpl implements Clan {
     }
 
     @Override
+    public boolean isReverificationEnabled() {
+        return new CMChecks(config).isReverificationEnabled(this);
+    }
+
+    @Override
     @Nonnull
     public List<Long> getBlockedUserIds() {
         List<Long> blockedUserIds = new ArrayList<>();
