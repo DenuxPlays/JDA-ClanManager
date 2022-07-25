@@ -266,12 +266,12 @@ public class ClanImpl implements Clan {
 
     @Override
     public void deleteClanMember(@Nonnull ClanMember clanMember, boolean updateRoles) {
+        if (updateRoles) new CMUtils().updateMemberRoles(clanMember, false);
         try(Connection con = config.getDataSource().getConnection()) {
             PreparedStatement pstm = con.prepareStatement(
                     "DELETE FROM \"clanMember\" WHERE \"id\" = ?");
             pstm.setInt(1, clanMember.getId());
             pstm.executeUpdate();
-            if (updateRoles) new CMUtils().updateMemberRoles(clanMember, false);
         }catch (SQLException exception) {
             log.error("Failed to delete clan member.");
             throw new ClanManagerException(exception);
