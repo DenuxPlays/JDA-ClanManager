@@ -34,6 +34,8 @@ public class ClanManagerBuilder {
      * Sets the {@link HikariDataSource} instance the manager will use to connect to the database.
      *
      * @param dataSource The HikariDataSource instance to use.
+     * @see ClanManagerBuilder#setJdbcUrl(String)
+     * @see ClanManagerBuilder#enableOwnDatabase()
      */
     @Nonnull
     public ClanManagerBuilder setDataSource(@Nonnull HikariDataSource dataSource) {
@@ -46,12 +48,14 @@ public class ClanManagerBuilder {
      *
      * @param jdbcUrl The JDBC URL to your Database.
      * @see ClanManagerBuilder#setDataSource(HikariDataSource)
+     * @see ClanManagerBuilder#enableOwnDatabase()
      */
     @Nonnull
     public ClanManagerBuilder setJdbcUrl(@Nonnull String jdbcUrl) {
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setJdbcUrl(jdbcUrl);
         config.setDataSource(dataSource);
+        Runtime.getRuntime().addShutdownHook(new Thread(dataSource::close));
         return this;
     }
 
