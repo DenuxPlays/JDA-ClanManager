@@ -2,7 +2,6 @@ package dev.denux.clanmanager.core.features.reverifications;
 
 import dev.denux.clanmanager.core.ClanManagerConfig;
 import dev.denux.clanmanager.entities.Clan;
-import dev.denux.clanmanager.utils.CMChecks;
 import net.dv8tion.jda.internal.utils.JDALogger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -21,7 +20,7 @@ public class ReverificationFeature {
     private final ClanManagerConfig config;
 
     public ReverificationFeature(@Nonnull Clan clan, @Nonnull ClanManagerConfig config) {
-        if (new CMChecks(config).isReverificationEnabled(clan)) throw new IllegalArgumentException("Reverification is not enabled for this clan");
+        if (!clan.isReverificationEnabled()) throw new IllegalArgumentException("Reverification is not enabled for this clan");
         this.clan = clan;
         this.config = config;
     }
