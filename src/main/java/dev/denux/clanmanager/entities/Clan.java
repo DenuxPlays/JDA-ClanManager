@@ -180,7 +180,7 @@ public interface Clan extends ClanManagerContainer {
     void deleteClanMember(@Nonnull ClanMember clanMember, boolean updateRoles);
 
     /**
-     * Deletes a clan member from this clan.
+     * Deletes a clan member from this clan and removes their clan member roles.
      * @param clanMember The clan member you want to delete/remove.
      */
     void deleteClanMember(@Nonnull ClanMember clanMember);
