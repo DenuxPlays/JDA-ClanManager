@@ -1,11 +1,11 @@
 package dev.denux.clanmanager.internal;
 
 import dev.denux.clanmanager.ClanManager;
+import dev.denux.clanmanager.core.ClanManagerConfig;
 import dev.denux.clanmanager.core.exceptions.ClanManagerException;
 import dev.denux.clanmanager.core.features.reverifications.ReverificationStateManager;
 import dev.denux.clanmanager.entities.Clan;
 import dev.denux.clanmanager.entities.ClanMember;
-import dev.denux.clanmanager.core.ClanManagerConfig;
 import dev.denux.clanmanager.internal.entities.ClanImpl;
 import dev.denux.clanmanager.internal.entities.ClanMemberImpl;
 import dev.denux.clanmanager.utils.CMChecks;
