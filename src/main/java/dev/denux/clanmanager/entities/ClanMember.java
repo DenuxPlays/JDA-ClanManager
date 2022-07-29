@@ -1,5 +1,6 @@
 package dev.denux.clanmanager.entities;
 
+import dev.denux.clanmanager.core.interfaces.ClanManagerContainer;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.interactions.DiscordLocale;
 
@@ -14,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
  * @see Clan#getClanMember(int)
  * @see Clan#getAllClanMembers()
  */
-public interface ClanMember {
+public interface ClanMember extends ClanManagerContainer {
 
     /**
      * @return The id of the clan member.

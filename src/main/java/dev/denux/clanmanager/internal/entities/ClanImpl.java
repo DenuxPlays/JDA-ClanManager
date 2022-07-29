@@ -1,5 +1,6 @@
 package dev.denux.clanmanager.internal.entities;
 
+import dev.denux.clanmanager.ClanManager;
 import dev.denux.clanmanager.core.ClanManagerConfig;
 import dev.denux.clanmanager.core.exceptions.ClanManagerException;
 import dev.denux.clanmanager.entities.Clan;
@@ -12,6 +13,7 @@ import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.interactions.DiscordLocale;
 import net.dv8tion.jda.internal.utils.JDALogger;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
@@ -383,5 +385,11 @@ public class ClanImpl implements Clan {
         } catch (SQLException exception) {
             log.error("Failed to clear blocklist.", exception);
         }
+    }
+
+    @NotNull
+    @Override
+    public ClanManager getClanManager() {
+        return config.getClanManager();
     }
 }

@@ -1,5 +1,6 @@
 package dev.denux.clanmanager.internal.entities;
 
+import dev.denux.clanmanager.ClanManager;
 import dev.denux.clanmanager.core.ClanManagerConfig;
 import dev.denux.clanmanager.entities.Clan;
 import dev.denux.clanmanager.entities.ClanMember;
@@ -7,6 +8,7 @@ import dev.denux.clanmanager.utils.CMUtils;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.interactions.DiscordLocale;
 import net.dv8tion.jda.internal.utils.JDALogger;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
@@ -161,5 +163,11 @@ public class ClanMemberImpl implements ClanMember {
     @Override
     public void setDiscordMember(Member member) {
         set("discordUserId", member.getIdLong());
+    }
+
+    @NotNull
+    @Override
+    public ClanManager getClanManager() {
+        return config.getClanManager();
     }
 }
