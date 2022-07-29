@@ -134,7 +134,7 @@ public class ClanManagerBuilder {
 
         if (config.getJda() == null) throw new IllegalStateException("JDA instance is null");
         if (config.getDataSource() == null) throw new IllegalStateException("DataSource instance is null");
-        if (config.getDataSource().getJdbcUrl().isEmpty() || config.getDataSource().getJdbcUrl().isEmpty()) {
+        if (config.getDataSource().getJdbcUrl().isEmpty() || config.getDataSource().getJdbcUrl().isBlank()) {
             throw new IllegalArgumentException("You need to set a JDBC URL before building the ClanManager!");
         }
         if (config.getQueries().isEmpty() || config.getQueries().isBlank() ||config.getQueries() == null) {
