@@ -20,7 +20,6 @@ import java.sql.SQLException;
  */
 public class CMChecks {
     private static final Logger log = JDALogger.getLog(CMChecks.class);
-
     private final ClanManagerConfig config;
 
     public CMChecks(@Nonnull ClanManagerConfig config) {
