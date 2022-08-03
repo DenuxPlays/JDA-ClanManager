@@ -71,6 +71,18 @@ public interface ClanMember extends ClanManagerContainer {
     void setCoOwnerStatus(boolean status);
 
     /**
+     * @return True if the clan member is an owner.
+     * @see Clan#getOwner()
+     * @see Clan#getOwnerId()
+     */
+    boolean getOwnerStatus();
+
+    /**
+     * Sets the clan member as the owner of the clan.
+     * @see Clan#setOwner(Member)
+     */
+    void setAsOwner();
+    /**
      * @return The locale of the clan member.
      */
     DiscordLocale getLocale();

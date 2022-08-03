@@ -126,6 +126,16 @@ public class ClanMemberImpl implements ClanMember {
     }
 
     @Override
+    public boolean getOwnerStatus() {
+        return getClan().getOwnerId() == getDiscordUserId();
+    }
+
+    @Override
+    public void setAsOwner() {
+        getClan().setOwner(getDiscordMember());
+    }
+
+    @Override
     public DiscordLocale getLocale() {
         return DiscordLocale.from(get("locale", String.class));
     }
