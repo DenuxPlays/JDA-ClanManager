@@ -1,6 +1,8 @@
 package dev.denux.clanmanager.entities;
 
 import dev.denux.clanmanager.core.interfaces.ClanManagerContainer;
+import dev.denux.clanmanager.internal.Permission;
+import jdk.jfr.Percentage;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.interactions.DiscordLocale;
 
@@ -122,4 +124,11 @@ public interface ClanMember extends ClanManagerContainer {
      * @param member The new member {@link net.dv8tion.jda.api.entities.Member} of the clan member.
      */
     void setDiscordMember(@Nonnull Member member);
+
+    /**
+     * Checks if the clan member has the given permission.
+     * @param permission The permission to check.
+     * @return True if the clan member has the permission.
+     */
+    boolean hasPermission(@Nonnull Permission permission);
 }

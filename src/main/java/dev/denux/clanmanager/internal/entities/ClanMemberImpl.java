@@ -4,6 +4,7 @@ import dev.denux.clanmanager.ClanManager;
 import dev.denux.clanmanager.core.ClanManagerConfig;
 import dev.denux.clanmanager.entities.Clan;
 import dev.denux.clanmanager.entities.ClanMember;
+import dev.denux.clanmanager.internal.Permission;
 import dev.denux.clanmanager.utils.CMUtils;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.interactions.DiscordLocale;
@@ -179,5 +180,13 @@ public class ClanMemberImpl implements ClanMember {
     @Override
     public ClanManager getClanManager() {
         return config.getClanManager();
+    }
+
+    @Override
+    public boolean hasPermission(@NotNull Permission permission) {
+        if (permission.equals(Permission.OWNER) && getOwnerStatus()) return true;
+        if (permission.equals(Permission.CO_OWNER) || getCoOwnerStatus()) return true;
+        if (permission.equals(Permission.LEADERSHIP)) return true;
+        else return false;
     }
 }

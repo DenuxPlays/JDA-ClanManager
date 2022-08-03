@@ -3,6 +3,7 @@ package dev.denux.clanmanager.entities;
 import dev.denux.clanmanager.ClanManager;
 import dev.denux.clanmanager.core.exceptions.ClanManagerException;
 import dev.denux.clanmanager.core.interfaces.ClanManagerContainer;
+import dev.denux.clanmanager.internal.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;

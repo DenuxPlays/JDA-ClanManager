@@ -5,6 +5,7 @@ import dev.denux.clanmanager.core.ClanManagerConfig;
 import dev.denux.clanmanager.core.exceptions.ClanManagerException;
 import dev.denux.clanmanager.entities.Clan;
 import dev.denux.clanmanager.entities.ClanMember;
+import dev.denux.clanmanager.internal.Permission;
 import dev.denux.clanmanager.utils.CMChecks;
 import dev.denux.clanmanager.utils.CMUtils;
 import net.dv8tion.jda.api.entities.Guild;
