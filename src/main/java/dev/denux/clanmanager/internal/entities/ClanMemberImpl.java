@@ -2,6 +2,7 @@ package dev.denux.clanmanager.internal.entities;
 
 import dev.denux.clanmanager.ClanManager;
 import dev.denux.clanmanager.core.ClanManagerConfig;
+import dev.denux.clanmanager.core.exceptions.PermissionExeption;
 import dev.denux.clanmanager.entities.Clan;
 import dev.denux.clanmanager.entities.ClanMember;
 import dev.denux.clanmanager.internal.Permission;
@@ -13,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -100,40 +102,44 @@ public class ClanMemberImpl implements ClanMember {
     }
 
     @Override
-    public boolean getLeaderShipStatus() {
-        return get("leaderShipStatus", Boolean.class);
+    public int getPermissionsLevel() {
+        return get("permission", int.class);
+    }
+
+    @Nullable
+    @Override
+    public Permission getPermission() {
+        return Permission.fromLevel(getPermissionsLevel());
     }
 
     @Override
-    public void setLeaderShipStatus(boolean leaderShipStatus) {
-        setLeaderShipStatus(leaderShipStatus, true);
+    public boolean hasPermission(@NotNull Permission permission) {
+        return permission.getLevel() == getPermissionsLevel();
     }
 
     @Override
-    public void setLeaderShipStatus(boolean leaderShipStatus, boolean updateDiscordRoles) {
-        set("leaderShipStatus", leaderShipStatus);
-        if (updateDiscordRoles) new CMUtils().updateLeadershipRole(this, leaderShipStatus);
+    public void addLeadershipPermission(boolean updateDiscordRoles) {
+        set("permission", Permission.LEADERSHIP.getLevel());
+        if (updateDiscordRoles) new CMUtils().updateLeadershipRole(this, true);
     }
 
     @Override
-    public boolean getCoOwnerStatus() {
-        return get("coOwnerStatus", Boolean.class);
+    public void addLeadershipPermission() {
+        addLeadershipPermission(true);
+    }
+
+
+    @Override
+    public void addCoOwnerPermission() {
+        set("permission", Permission.CO_OWNER.getLevel());
     }
 
     @Override
-    public void setCoOwnerStatus(boolean status) {
-        setLeaderShipStatus(status);
-        set("coOwnerStatus", status);
-    }
-
-    @Override
-    public boolean getOwnerStatus() {
-        return getClan().getOwnerId() == getDiscordUserId();
-    }
-
-    @Override
-    public void setAsOwner() {
-        getClan().setOwner(getDiscordMember());
+    public void removePermission(@NotNull Permission permission) {
+        if (permission == Permission.MEMBER) {
+            throw new PermissionExeption("You can't remove the member permission. Use the kick method instead.");
+        }
+        set("permission", Permission.fromLevel(permission.getLevel() - 1));
     }
 
     @Override
@@ -180,13 +186,5 @@ public class ClanMemberImpl implements ClanMember {
     @Override
     public ClanManager getClanManager() {
         return config.getClanManager();
-    }
-
-    @Override
-    public boolean hasPermission(@NotNull Permission permission) {
-        if (permission.equals(Permission.OWNER) && getOwnerStatus()) return true;
-        if (permission.equals(Permission.CO_OWNER) || getCoOwnerStatus()) return true;
-        if (permission.equals(Permission.LEADERSHIP)) return true;
-        else return false;
     }
 }

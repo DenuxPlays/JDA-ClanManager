@@ -2,12 +2,13 @@ package dev.denux.clanmanager.entities;
 
 import dev.denux.clanmanager.core.interfaces.ClanManagerContainer;
 import dev.denux.clanmanager.internal.Permission;
-import jdk.jfr.Percentage;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.interactions.DiscordLocale;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.sql.Timestamp;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -46,44 +47,41 @@ public interface ClanMember extends ClanManagerContainer {
      */
     void setNickname(@Nonnull String nickname);
 
-    /**
-     * @return The true if the clan member has a leadership position.
-     */
-    boolean getLeaderShipStatus();
+    int getPermissionsLevel();
+
+    @Nullable
+    Permission getPermission();
 
     /**
-     * @param leaderShipStatus The new leadership status of the clan member.
+     * Checks if the clan member has the given permission.
+     *
+     * @param permission The permission to check.
+     * @return True if the clan member has the permission.
      */
-    void setLeaderShipStatus(boolean leaderShipStatus);
+    boolean hasPermission(@Nonnull Permission permission);
 
     /**
-     * @param leaderShipStatus The new leadership status of the clan member.
+     * Adds the {@link Permission#LEADERSHIP} to the clan member.
+     */
+    void addLeadershipPermission();
+
+    /**
      * @param updateDiscordRoles False if you don't want to update the {@link Member}'s roles.
      */
-    void setLeaderShipStatus(boolean leaderShipStatus, boolean updateDiscordRoles);
+    void addLeadershipPermission(boolean updateDiscordRoles);
 
     /**
-     * @return True if the clan member is a co owner.
+     * Adds the {@link Permission#CO_OWNER} to the clan member.
      */
-    boolean getCoOwnerStatus();
+    void addCoOwnerPermission();
 
     /**
-     * @param status The new co owner status of the clan member.
+     * Removes a permission from a member
+     * @param permission the permssions to remove.
+     * @throws dev.denux.clanmanager.core.exceptions.PermissionExeption if you try to remove the {@link Permission#MEMBER} permission.
      */
-    void setCoOwnerStatus(boolean status);
+    void removePermission(@Nonnull Permission permission);
 
-    /**
-     * @return True if the clan member is an owner.
-     * @see Clan#getOwner()
-     * @see Clan#getOwnerId()
-     */
-    boolean getOwnerStatus();
-
-    /**
-     * Sets the clan member as the owner of the clan.
-     * @see Clan#setOwner(Member)
-     */
-    void setAsOwner();
     /**
      * @return The locale of the clan member.
      */
@@ -116,6 +114,7 @@ public interface ClanMember extends ClanManagerContainer {
 
     /**
      * Makes an API call to retrieve the member object.
+     *
      * @return The member object.
      */
     CompletableFuture<Member> retrieveDiscordMember();
@@ -124,11 +123,4 @@ public interface ClanMember extends ClanManagerContainer {
      * @param member The new member {@link net.dv8tion.jda.api.entities.Member} of the clan member.
      */
     void setDiscordMember(@Nonnull Member member);
-
-    /**
-     * Checks if the clan member has the given permission.
-     * @param permission The permission to check.
-     * @return True if the clan member has the permission.
-     */
-    boolean hasPermission(@Nonnull Permission permission);
 }

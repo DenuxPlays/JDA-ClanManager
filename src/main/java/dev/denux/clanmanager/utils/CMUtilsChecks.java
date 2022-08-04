@@ -21,9 +21,9 @@ public class CMUtilsChecks {
         if (leadership.getId() == clanMember.getId()) return false;
         if (!leadership.getLeaderShipStatus()) return false;
         Clan clan = leadership.getClan();
-        if (clan.getOwnerId() == clanMember.getDiscordUserId()) return false;
+        if (clan.getOwnerDiscordUserId() == clanMember.getDiscordUserId()) return false;
 
-        if (clanMember.getCoOwnerStatus() && leadership.getDiscordUserId() == clan.getOwnerId()) return true;
+        if (clanMember.getCoOwnerStatus() && leadership.getDiscordUserId() == clan.getOwnerDiscordUserId()) return true;
         if (leadership.getLeaderShipStatus() && !clanMember.getLeaderShipStatus()) return true;
         if (leadership.getCoOwnerStatus() && !clanMember.getCoOwnerStatus()) return true;
 

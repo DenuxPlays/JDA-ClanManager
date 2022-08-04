@@ -5,7 +5,6 @@ import dev.denux.clanmanager.core.ClanManagerConfig;
 import dev.denux.clanmanager.core.exceptions.ClanManagerException;
 import dev.denux.clanmanager.entities.Clan;
 import dev.denux.clanmanager.entities.ClanMember;
-import dev.denux.clanmanager.internal.Permission;
 import dev.denux.clanmanager.utils.CMChecks;
 import dev.denux.clanmanager.utils.CMUtils;
 import net.dv8tion.jda.api.entities.Guild;
@@ -124,23 +123,34 @@ public class ClanImpl implements Clan {
     }
 
     @Override
-    public long getOwnerId() {
-        return get("ownerId", Long.class);
+    public long getOwnerDiscordUserId() {
+        return get("ownerUserId", Long.class);
     }
 
     @Override
-    public Member getOwner() {
-        return getDiscordGuild().getMemberById(getOwnerId());
+    public Member getOwnerAsDiscordMember() {
+        return getDiscordGuild().getMemberById(getOwnerDiscordUserId());
     }
 
     @Override
-    public CompletableFuture<Member> retrieveOwner() {
-        return getDiscordGuild().retrieveMemberById(getOwnerId()).submit();
+    public CompletableFuture<Member> retrieveOwnerAsDiscordMember() {
+        return getDiscordGuild().retrieveMemberById(getOwnerDiscordUserId()).submit();
     }
 
     @Override
-    public void setOwner(@Nonnull Member owner) {
-        set("ownerId", owner.getIdLong());
+    public void setOwner(@Nonnull ClanMember owner) {
+        set("ownerId", owner.getId());
+        set("ownerUserId", owner.getDiscordUserId());
+    }
+
+    @Override
+    public int getOwnerClanMemberId() {
+        return get("ownerId", int.class);
+    }
+
+    @Override
+    public ClanMember getOwnerAsClanMember() {
+        return config.getClanManager().getClanMember(getOwnerClanMemberId());
     }
 
     @Override

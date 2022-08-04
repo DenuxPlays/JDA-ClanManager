@@ -3,7 +3,6 @@ package dev.denux.clanmanager.entities;
 import dev.denux.clanmanager.ClanManager;
 import dev.denux.clanmanager.core.exceptions.ClanManagerException;
 import dev.denux.clanmanager.core.interfaces.ClanManagerContainer;
-import dev.denux.clanmanager.internal.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -70,23 +69,35 @@ public interface Clan extends ClanManagerContainer {
     /**
      * @return The discord user id {@link net.dv8tion.jda.api.entities.User} from the clan owner.
      */
-    long getOwnerId();
+    long getOwnerDiscordUserId();
 
     /**
      * @return The discord member {@link Member} from the clan owner.
      */
-    Member getOwner();
+    Member getOwnerAsDiscordMember();
 
     /**
      * Makes an API call to retrieve the member object.
      * @return The member object.
      */
-    CompletableFuture<Member> retrieveOwner();
+    CompletableFuture<Member> retrieveOwnerAsDiscordMember();
 
     /**
-     * @param owner The discord member {@link Member} from the clan owner.
+     * @param owner The member {@link ClanMember} from the clan owner.
      */
-    void setOwner(@Nonnull Member owner);
+    void setOwner(@Nonnull ClanMember owner);
+
+    /**
+     * Gets you the id from the clan member.
+     * @return The id of the clan member.
+     */
+    int getOwnerClanMemberId();
+
+    /**
+     * Gets you the owner as a {@link ClanMember} object.
+     * @return the owner as a {@link ClanMember} object.
+     */
+    ClanMember getOwnerAsClanMember();
 
     /**
      * @return The id of the clans' leadership role.

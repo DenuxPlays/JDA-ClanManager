@@ -13,7 +13,7 @@ plugins {
 
 group = "dev.denux"
 val archivesBaseName = "jda-clanmanager"
-version = "1.0.0-alpha.8"
+version = "1.0.0-alpha.9"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -51,8 +51,8 @@ dependencies {
 
     testImplementation("org.postgresql:postgresql:42.4.0")
     testImplementation("ch.qos.logback:logback-classic:1.2.11")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
 }
 
 tasks.withType<Test> { useJUnitPlatform() }
