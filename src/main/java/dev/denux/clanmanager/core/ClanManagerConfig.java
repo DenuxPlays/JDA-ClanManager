@@ -25,8 +25,9 @@ public class ClanManagerConfig {
             "    \"verificationCode\" TEXT NOT NULL UNIQUE,\n" +
             "    \"name\" TEXT NOT NULL,\n" +
             "    \"tag\" TEXT NOT NULL,\n" +
+            "    \"ownerId\" INT NOT NULL,\n" +
+            "    \"ownerUserId\" BIGINT NOT NULL,\n" +
             "    \"discordGuildId\" BIGINT NOT NULL,\n" +
-            "    \"ownerId\" BIGINT NOT NULL,\n" +
             "    \"leaderShipRoleId\" BIGINT NOT NULL,\n" +
             "    \"memberRoleId\" BIGINT NOT NULL,\n" +
             "    \"discordChannelId\" BIGINT NOT NULL\n" +
@@ -36,8 +37,7 @@ public class ClanManagerConfig {
             "    \"id\" SERIAL PRIMARY KEY,\n" +
             "    \"verificationTime\" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n" +
             "    \"nickname\" TEXT NOT NULL,\n" +
-            "    \"leaderShipStatus\" BOOLEAN NOT NULL DEFAULT FALSE,\n" +
-            "    \"coOwnerStatus\" BOOLEAN NOT NULL DEFAULT FALSE,\n" +
+            "    \"permission\" INT NOT NULL DEFAULT 50,\n" +
             "    \"locale\" TEXT NOT NULL,\n" +
             "    \"clanId\" INT NOT NULL,\n" +
             "    \"discordUserId\" BIGINT NOT NULL\n" +
