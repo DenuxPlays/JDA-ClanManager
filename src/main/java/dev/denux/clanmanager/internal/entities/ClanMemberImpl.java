@@ -10,7 +10,6 @@ import dev.denux.clanmanager.utils.CMUtils;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.interactions.DiscordLocale;
 import net.dv8tion.jda.internal.utils.JDALogger;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
@@ -113,7 +112,7 @@ public class ClanMemberImpl implements ClanMember {
     }
 
     @Override
-    public boolean hasPermission(@NotNull Permission permission) {
+    public boolean hasPermission(@Nonnull Permission permission) {
         return permission.getLevel() == getPermissionsLevel();
     }
 
@@ -135,7 +134,7 @@ public class ClanMemberImpl implements ClanMember {
     }
 
     @Override
-    public void removePermission(@NotNull Permission permission) {
+    public void removePermission(@Nonnull Permission permission) {
         if (permission == Permission.MEMBER) {
             throw new PermissionExeption("You can't remove the member permission. Use the kick method instead.");
         }
@@ -148,7 +147,7 @@ public class ClanMemberImpl implements ClanMember {
     }
 
     @Override
-    public void setLocale(DiscordLocale locale) {
+    public void setLocale(@Nonnull DiscordLocale locale) {
         set("locale", locale.getLocale());
     }
 
@@ -178,11 +177,11 @@ public class ClanMemberImpl implements ClanMember {
     }
 
     @Override
-    public void setDiscordMember(Member member) {
+    public void setDiscordMember(@Nonnull Member member) {
         set("discordUserId", member.getIdLong());
     }
 
-    @NotNull
+    @Nonnull
     @Override
     public ClanManager getClanManager() {
         return config.getClanManager();

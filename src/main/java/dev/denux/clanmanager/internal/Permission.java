@@ -1,7 +1,5 @@
 package dev.denux.clanmanager.internal;
 
-//TODO add java docs
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
