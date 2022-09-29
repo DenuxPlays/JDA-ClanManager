@@ -3,7 +3,7 @@ package dev.denux.clanmanager.internal;
 /**
  * Represents the permission of a {@link dev.denux.clanmanager.internal.entities.ClanMember}.
  */
-public enum Permission {
+public enum CmPermission {
     /**
      * The top permission that can only have one {@link net.dv8tion.jda.api.entities.User} at a time.
      */
@@ -23,7 +23,7 @@ public enum Permission {
 
     private final int level;
 
-    Permission(int level) {
+    CmPermission(int level) {
         if (level > 5) {
             throw new IllegalArgumentException("Level can not be higher than 4");
         }

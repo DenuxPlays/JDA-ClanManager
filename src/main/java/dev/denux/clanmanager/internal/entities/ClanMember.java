@@ -3,7 +3,7 @@ package dev.denux.clanmanager.internal.entities;
 import dev.denux.clanmanager.ClanManager;
 import dev.denux.clanmanager.core.ClanManagerConfig;
 import dev.denux.clanmanager.core.exceptions.PermissionException;
-import dev.denux.clanmanager.internal.Permission;
+import dev.denux.clanmanager.internal.CmPermission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.interactions.DiscordLocale;
 import net.dv8tion.jda.internal.utils.JDALogger;
@@ -92,20 +92,17 @@ public class ClanMember {
     }
 
     @Nonnull
-    public Permission getPermission() {
-        return Permission.valueOf(get("permission", String.class));
+    public CmPermission getPermission() {
+        return CmPermission.valueOf(get("permission", String.class));
     }
 
-    public boolean hasPermission(@Nonnull Permission permission) {
+    public boolean hasPermission(@Nonnull CmPermission permission) {
         return permission.getLevel() > getPermission().getLevel();
     }
 
-    public void removePermission(@Nonnull Permission permission) {
-        if (permission == Permission.MEMBER) {
-            throw new PermissionException("You can't remove the member permission. Use the kick method instead.");
-        }
-        if (permission == Permission.OWNER) {
-            throw new PermissionException("Owner can't be removed it can just be changed. Use Clan.changeOwner() for that.");
+    public void setPermission(@Nonnull CmPermission permission) {
+        if (permission.equals(CmPermission.OWNER)) {
+            throw new PermissionException("Owner can't be added it can just be changed. Use Clan.changeOwner() for that.");
         }
         set("permission", permission);
     }

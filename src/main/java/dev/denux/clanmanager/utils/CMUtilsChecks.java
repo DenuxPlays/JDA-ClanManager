@@ -1,6 +1,6 @@
 package dev.denux.clanmanager.utils;
 
-import dev.denux.clanmanager.internal.Permission;
+import dev.denux.clanmanager.internal.CmPermission;
 import dev.denux.clanmanager.internal.entities.Clan;
 import dev.denux.clanmanager.internal.entities.ClanMember;
 
@@ -20,13 +20,13 @@ public class CMUtilsChecks {
     public boolean clanMemberIsAbove(@Nonnull ClanMember leadership, @Nonnull ClanMember clanMember) {
         if (leadership.getClan().getId() != clanMember.getClan().getId()) return false;
         if (leadership.getId() == clanMember.getId()) return false;
-        if (!leadership.hasPermission(Permission.LEADERSHIP)) return false;
+        if (!leadership.hasPermission(CmPermission.LEADERSHIP)) return false;
         Clan clan = leadership.getClan();
         if (clan.getOwnerDiscordUserId() == clanMember.getDiscordUserId()) return false;
 
-        if (clanMember.hasPermission(Permission.CO_OWNER) && leadership.getDiscordUserId() == clan.getOwnerDiscordUserId()) return true;
-        if (leadership.hasPermission(Permission.LEADERSHIP) && !clanMember.hasPermission(Permission.LEADERSHIP)) return true;
-        if (leadership.hasPermission(Permission.CO_OWNER) && !clanMember.hasPermission(Permission.CO_OWNER)) return true;
+        if (clanMember.hasPermission(CmPermission.CO_OWNER) && leadership.getDiscordUserId() == clan.getOwnerDiscordUserId()) return true;
+        if (leadership.hasPermission(CmPermission.LEADERSHIP) && !clanMember.hasPermission(CmPermission.LEADERSHIP)) return true;
+        if (leadership.hasPermission(CmPermission.CO_OWNER) && !clanMember.hasPermission(CmPermission.CO_OWNER)) return true;
 
         return  false;
     }
