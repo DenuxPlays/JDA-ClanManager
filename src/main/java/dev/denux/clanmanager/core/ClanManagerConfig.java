@@ -36,7 +36,7 @@ public class ClanManagerConfig {
                     "    \"id\" SERIAL PRIMARY KEY,\n" +
                     "    \"verificationTime\" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n" +
                     "    \"nickname\" TEXT NOT NULL,\n" +
-                    "    \"permission\" TEXT NOT NULL DEFAULT \"MEMBER\",\n" +
+                    "    \"permission\" TEXT NOT NULL DEFAULT 'MEMBER',\n" +
                     "    \"locale\" TEXT NOT NULL,\n" +
                     "    \"clanId\" INT NOT NULL,\n" +
                     "    \"discordUserId\" BIGINT NOT NULL\n" +

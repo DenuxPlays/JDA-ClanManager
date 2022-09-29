@@ -49,12 +49,12 @@ public class SystemSetup {
     public void setupH2Database(@Nonnull HikariConfig hConfig) {
         Server server;
         try {
-            server = Server.createTcpServer("-tcpPort", "9123", "-ifNotExists").start();
+            server = Server.createTcpServer("-tcpPort", "9124", "-ifNotExists").start();
         } catch (SQLException exception) {
             throw new IllegalStateException("Could not start database server.", exception);
         }
 
-        hConfig.setJdbcUrl("jdbc:h2:tcp://localhost:9123/./clanmanager");
+        hConfig.setJdbcUrl("jdbc:h2:tcp://localhost:9124/./clanmanager");
         config.setDataSource(new HikariDataSource(hConfig));
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {

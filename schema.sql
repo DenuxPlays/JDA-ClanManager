@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS "clanMember" (
     "id" SERIAL PRIMARY KEY,
     "verificationTime" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "nickname" TEXT NOT NULL,
-    "permission" TEXT NOT NULL DEFAULT "MEMBER",
+    "permission" TEXT NOT NULL DEFAULT 'MEMBER',
     "locale" TEXT NOT NULL,
     "clanId" INT NOT NULL,
     "discordUserId" BIGINT NOT NULL
