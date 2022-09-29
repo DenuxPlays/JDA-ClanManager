@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * Represents the permission of a {@link dev.denux.clanmanager.entities.ClanMember}.
+ * Represents the permission of a {@link dev.denux.clanmanager.internal.entities.ClanMember}.
  */
 public enum Permission {
     /**

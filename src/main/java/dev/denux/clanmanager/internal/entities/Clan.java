@@ -3,14 +3,12 @@ package dev.denux.clanmanager.internal.entities;
 import dev.denux.clanmanager.ClanManager;
 import dev.denux.clanmanager.core.ClanManagerConfig;
 import dev.denux.clanmanager.core.exceptions.ClanManagerException;
-import dev.denux.clanmanager.entities.Clan;
-import dev.denux.clanmanager.entities.ClanMember;
 import dev.denux.clanmanager.utils.CMChecks;
 import dev.denux.clanmanager.utils.CMUtils;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.interactions.DiscordLocale;
 import net.dv8tion.jda.internal.utils.JDALogger;
 import org.jetbrains.annotations.NotNull;
@@ -26,14 +24,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class ClanImpl implements Clan {
+public class Clan {
 
-    private final Logger log = JDALogger.getLog(ClanImpl.class);
+    private final Logger log = JDALogger.getLog(Clan.class);
 
     private final int id;
     private final ClanManagerConfig config;
 
-    public ClanImpl(ClanManagerConfig config, int id) {
+    public Clan(ClanManagerConfig config, int id) {
         this.id = id;
         this.config = config;
     }
@@ -76,129 +74,104 @@ public class ClanImpl implements Clan {
         }
     }
 
-    @Override
     public int getId() {
         return id;
     }
 
-    @Override
     public String getVerificationCode() {
         return get("verificationCode", String.class);
     }
 
-    @Override
     public void setVerificationCode(@Nonnull String verificationCode) {
         new CMChecks(config).checkVerificationCode(verificationCode);
         set("verificationCode", verificationCode);
     }
 
-    @Override
     public String getName() {
         return get("name", String.class);
     }
 
-    @Override
     public void setName(@Nonnull String name) {
         set("name", name);
     }
 
-    @Override
     public String getTag() {
         return get("tag", String.class);
     }
 
-    @Override
     public void setTag(@Nonnull String tag) {
         set("tag", tag);
     }
 
-    @Override
     public long getDiscordGuildId() {
         return get("discordGuildId", Long.class);
     }
 
-    @Override
     public Guild getDiscordGuild() {
         return config.getJda().getGuildById(getDiscordGuildId());
     }
 
-    @Override
     public long getOwnerDiscordUserId() {
         return get("ownerUserId", Long.class);
     }
 
-    @Override
     public Member getOwnerAsDiscordMember() {
         return getDiscordGuild().getMemberById(getOwnerDiscordUserId());
     }
 
-    @Override
     public CompletableFuture<Member> retrieveOwnerAsDiscordMember() {
         return getDiscordGuild().retrieveMemberById(getOwnerDiscordUserId()).submit();
     }
 
-    @Override
     public void setOwner(@Nonnull ClanMember owner) {
         set("ownerId", owner.getId());
         set("ownerUserId", owner.getDiscordUserId());
     }
 
-    @Override
     public int getOwnerClanMemberId() {
         return get("ownerId", int.class);
     }
 
-    @Override
     public ClanMember getOwnerAsClanMember() {
         return config.getClanManager().getClanMember(getOwnerClanMemberId());
     }
 
-    @Override
     public long getLeaderShipRoleId() {
         return get("leaderShipRoleId", Long.class);
     }
 
-    @Override
     public Role getLeaderShipRole() {
         return getDiscordGuild().getRoleById(getLeaderShipRoleId());
     }
 
-    @Override
     public void setLeaderShipRole(@Nonnull Role role) {
         set("leaderShipRoleId", role.getIdLong());
     }
 
-    @Override
     public long getMemberRoleId() {
         return get("memberRoleId", Long.class);
     }
 
-    @Override
     public Role getMemberRole() {
         return getDiscordGuild().getRoleById(getMemberRoleId());
     }
 
-    @Override
     public void setMemberRole(@Nonnull Role role) {
         set("memberRoleId", role.getIdLong());
     }
 
-    @Override
     public long getDiscordChannelId() {
         return get("discordChannelId", Long.class);
     }
 
-    @Override
     public TextChannel getDiscordChannel() {
         return getDiscordGuild().getTextChannelById(getDiscordChannelId());
     }
 
-    @Override
     public void setDiscordChannel(@Nonnull TextChannel channel) {
         set("discordChannelId", channel.getIdLong());
     }
 
-    @Override
     public ClanMember getClanMember(@Nonnull Member member) {
         try(Connection con = config.getDataSource().getConnection()) {
             PreparedStatement pstm = con.prepareStatement(
@@ -219,12 +192,10 @@ public class ClanImpl implements Clan {
         }
     }
 
-    @Override
     public ClanMember getClanMember(int clanMemberId) {
         return config.getClanManager().getClanMember(clanMemberId);
     }
 
-    @Override
     public List<ClanMember> getAllClanMembers() {
         List<ClanMember> clanMembers = new ArrayList<>();
         try(Connection con = config.getDataSource().getConnection()) {
@@ -241,7 +212,6 @@ public class ClanImpl implements Clan {
         return clanMembers;
     }
 
-    @Override
     public int createClanMember(@Nonnull String nickname, @Nonnull DiscordLocale locale, @Nonnull Member member, boolean leaderShipStatus, boolean isCoOwner, boolean updateRoles) {
         new CMChecks(config).checkClanMemberDuplication(this, member);
         if (isBlocked(member)) throw new IllegalArgumentException("The member is blocked.");
@@ -271,12 +241,10 @@ public class ClanImpl implements Clan {
         }
     }
 
-    @Override
     public int createClanMember(@Nonnull String nickname, @Nonnull DiscordLocale locale, @Nonnull Member member) {
         return createClanMember(nickname, locale, member, false, false, true);
     }
 
-    @Override
     public void deleteClanMember(@Nonnull ClanMember clanMember, boolean updateRoles) {
         if (updateRoles) new CMUtils().updateMemberRoles(clanMember, false);
         try(Connection con = config.getDataSource().getConnection()) {
@@ -290,12 +258,10 @@ public class ClanImpl implements Clan {
         }
     }
 
-    @Override
     public void deleteClanMember(@Nonnull ClanMember clanMember) {
         deleteClanMember(clanMember, true);
     }
 
-    @Override
     public void enableReverification() {
         try(Connection con = config.getDataSource().getConnection()) {
             PreparedStatement pstm = con.prepareStatement("INSERT INTO \"reverificationFeature\" (\"clanId\") VALUES (?)");
@@ -309,7 +275,6 @@ public class ClanImpl implements Clan {
         }
     }
 
-    @Override
     public void disableReverification() {
         try(Connection con = config.getDataSource().getConnection()) {
             PreparedStatement pstm = con.prepareStatement("DELETE FROM \"reverificationFeature\" WHERE \"clanId\" = ?");
@@ -323,12 +288,10 @@ public class ClanImpl implements Clan {
         }
     }
 
-    @Override
     public boolean isReverificationEnabled() {
         return new CMChecks(config).isReverificationEnabled(this);
     }
 
-    @Override
     @Nonnull
     public List<Long> getBlockedUserIds() {
         List<Long> blockedUserIds = new ArrayList<>();
@@ -345,7 +308,6 @@ public class ClanImpl implements Clan {
         return blockedUserIds;
     }
 
-    @Override
     public boolean isBlocked(@Nonnull Member member) {
         try(Connection con = config.getDataSource().getConnection()) {
             PreparedStatement pstm = con.prepareStatement("SELECT \"discordUserId\" FROM \"blockedUsers\" WHERE \"clanId\" = ? AND \"discordUserId\" = ?");
@@ -361,7 +323,6 @@ public class ClanImpl implements Clan {
         }
     }
 
-    @Override
     public void addMemberToBlocklist(@Nonnull Member member) {
         try(Connection con = config.getDataSource().getConnection()) {
             PreparedStatement pstm = con.prepareStatement("INSERT INTO \"blockedUsers\" (\"clanId\", \"discordUserId\") VALUES (?, ?)");
@@ -373,7 +334,6 @@ public class ClanImpl implements Clan {
         }
     }
 
-    @Override
     public void removeMemberFromBlocklist(@Nonnull Member member) throws IllegalArgumentException {
         if (!isBlocked(member)) throw new IllegalArgumentException("Member is not blocked.");
 
@@ -387,7 +347,6 @@ public class ClanImpl implements Clan {
         }
     }
 
-    @Override
     public void clearBlocklist() {
         try(Connection con = config.getDataSource().getConnection()) {
             PreparedStatement pstm = con.prepareStatement("DELETE FROM \"blockedUsers\" WHERE \"clanId\" = ?");
@@ -399,7 +358,6 @@ public class ClanImpl implements Clan {
     }
 
     @NotNull
-    @Override
     public ClanManager getClanManager() {
         return config.getClanManager();
     }

@@ -1,11 +1,11 @@
 package dev.denux.clanmanager.utils;
 
 import dev.denux.clanmanager.core.ClanManagerConfig;
-import dev.denux.clanmanager.entities.Clan;
+import dev.denux.clanmanager.internal.entities.Clan;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.internal.utils.JDALogger;
 import org.slf4j.Logger;
 

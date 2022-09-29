@@ -5,7 +5,6 @@ import dev.denux.clanmanager.ClanManager;
 import dev.denux.clanmanager.core.features.reverifications.BasicReverificationJob;
 import dev.denux.clanmanager.core.features.reverifications.ReverificationJob;
 import dev.denux.clanmanager.core.features.reverifications.ReverificationStateManager;
-import dev.denux.clanmanager.internal.ClanManagerImpl;
 import net.dv8tion.jda.api.JDA;
 
 /**
@@ -17,7 +16,7 @@ public class ClanManagerConfig {
     private boolean useOwnH2Database = false;
     private HikariDataSource dataSource;
     private ClanManager clanManager;
-    private Class<? extends ClanManager> CMImplementation = ClanManagerImpl.class;
+    private Class<? extends ClanManager> CMImplementation = ClanManager.class;
     private Class<? extends BasicReverificationJob> reverificationJobImpl = ReverificationJob.class;
     private ReverificationStateManager reverificationManager;
     private String queries = "CREATE TABLE IF NOT EXISTS \"clan\" (\n" +

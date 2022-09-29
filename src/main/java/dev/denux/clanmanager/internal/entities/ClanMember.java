@@ -2,9 +2,7 @@ package dev.denux.clanmanager.internal.entities;
 
 import dev.denux.clanmanager.ClanManager;
 import dev.denux.clanmanager.core.ClanManagerConfig;
-import dev.denux.clanmanager.core.exceptions.PermissionExeption;
-import dev.denux.clanmanager.entities.Clan;
-import dev.denux.clanmanager.entities.ClanMember;
+import dev.denux.clanmanager.core.exceptions.PermissionException;
 import dev.denux.clanmanager.internal.Permission;
 import dev.denux.clanmanager.utils.CMUtils;
 import net.dv8tion.jda.api.entities.Member;
@@ -21,14 +19,14 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.concurrent.CompletableFuture;
 
-public class ClanMemberImpl implements ClanMember {
+public class ClanMember {
 
-    private final Logger log = JDALogger.getLog(ClanImpl.class);
+    private final Logger log = JDALogger.getLog(Clan.class);
 
     private final int id;
     private final ClanManagerConfig config;
 
-    public ClanMemberImpl(ClanManagerConfig config, int id) {
+    public ClanMember(ClanManagerConfig config, int id) {
         this.id = id;
         this.config = config;
     }
@@ -75,114 +73,93 @@ public class ClanMemberImpl implements ClanMember {
         }
     }
 
-    @Override
     public int getId() {
         return id;
     }
 
-    @Override
     public Timestamp getVerificationDate() {
         return get("verificationTime", Timestamp.class);
     }
 
-    @Override
     public void setVerificationDate(@Nonnull Timestamp verificationDate) {
         set("verificationTime", verificationDate);
     }
 
-    @Override
     public String getNickname() {
         return get("nickname", String.class);
     }
 
-    @Override
     public void setNickname(@Nonnull String nickname) {
         set("nickname", nickname);
     }
 
-    @Override
     public int getPermissionsLevel() {
         return get("permission", int.class);
     }
 
     @Nullable
-    @Override
     public Permission getPermission() {
         return Permission.fromLevel(getPermissionsLevel());
     }
 
-    @Override
     public boolean hasPermission(@Nonnull Permission permission) {
         return permission.getLevel() == getPermissionsLevel();
     }
 
-    @Override
     public void addLeadershipPermission(boolean updateDiscordRoles) {
         set("permission", Permission.LEADERSHIP.getLevel());
         if (updateDiscordRoles) new CMUtils().updateLeadershipRole(this, true);
     }
 
-    @Override
     public void addLeadershipPermission() {
         addLeadershipPermission(true);
     }
 
 
-    @Override
     public void addCoOwnerPermission() {
         set("permission", Permission.CO_OWNER.getLevel());
     }
 
-    @Override
     public void removePermission(@Nonnull Permission permission) {
         if (permission == Permission.MEMBER) {
-            throw new PermissionExeption("You can't remove the member permission. Use the kick method instead.");
+            throw new PermissionException("You can't remove the member permission. Use the kick method instead.");
         }
         set("permission", Permission.fromLevel(permission.getLevel() - 1));
     }
 
-    @Override
     public DiscordLocale getLocale() {
         return DiscordLocale.from(get("locale", String.class));
     }
 
-    @Override
     public void setLocale(@Nonnull DiscordLocale locale) {
         set("locale", locale.getLocale());
     }
 
-    @Override
     public int getClanId() {
         return get("clanId", Integer.class);
     }
 
-    @Override
     public Clan getClan() {
         return config.getClanManager().getClan(getClanId());
     }
 
-    @Override
     public long getDiscordUserId() {
         return get("discordUserId", Long.class);
     }
 
-    @Override
     public Member getDiscordMember() {
         return getClan().getDiscordGuild().getMemberById(getDiscordUserId());
     }
 
-    @Override
     public CompletableFuture<Member> retrieveDiscordMember() {
         return getClan().getDiscordGuild().retrieveMemberById(getDiscordUserId()).submit();
     }
 
-    @Override
     public void setDiscordMember(@Nonnull Member member) {
         set("discordUserId", member.getIdLong());
     }
 
     @Nonnull
-    @Override
     public ClanManager getClanManager() {
         return config.getClanManager();
     }

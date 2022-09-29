@@ -1,7 +1,7 @@
 package dev.denux.clanmanager.core.features.reverifications;
 
 import dev.denux.clanmanager.core.ClanManagerConfig;
-import dev.denux.clanmanager.entities.ClanMember;
+import dev.denux.clanmanager.internal.entities.ClanMember;
 import dev.denux.clanmanager.utils.CMChecks;
 import net.dv8tion.jda.internal.utils.JDALogger;
 import org.quartz.Job;
