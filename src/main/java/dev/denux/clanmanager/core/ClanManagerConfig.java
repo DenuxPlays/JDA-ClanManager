@@ -16,42 +16,42 @@ public class ClanManagerConfig {
     private boolean useOwnH2Database = false;
     private HikariDataSource dataSource;
     private ClanManager clanManager;
-    private Class<? extends ClanManager> CMImplementation = ClanManager.class;
     private Class<? extends BasicReverificationJob> reverificationJobImpl = ReverificationJob.class;
     private ReverificationStateManager reverificationManager;
-    private String queries = "CREATE TABLE IF NOT EXISTS \"clan\" (\n" +
-            "    \"id\" SERIAL PRIMARY KEY,\n" +
-            "    \"verificationCode\" TEXT NOT NULL UNIQUE,\n" +
-            "    \"name\" TEXT NOT NULL,\n" +
-            "    \"tag\" TEXT NOT NULL,\n" +
-            "    \"ownerId\" INT NOT NULL,\n" +
-            "    \"ownerUserId\" BIGINT NOT NULL,\n" +
-            "    \"discordGuildId\" BIGINT NOT NULL,\n" +
-            "    \"leaderShipRoleId\" BIGINT NOT NULL,\n" +
-            "    \"memberRoleId\" BIGINT NOT NULL,\n" +
-            "    \"discordChannelId\" BIGINT NOT NULL\n" +
-            ");\n" +
-            "\n" +
-            "CREATE TABLE IF NOT EXISTS \"clanMember\" (\n" +
-            "    \"id\" SERIAL PRIMARY KEY,\n" +
-            "    \"verificationTime\" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n" +
-            "    \"nickname\" TEXT NOT NULL,\n" +
-            "    \"permission\" INT NOT NULL DEFAULT 50,\n" +
-            "    \"locale\" TEXT NOT NULL,\n" +
-            "    \"clanId\" INT NOT NULL,\n" +
-            "    \"discordUserId\" BIGINT NOT NULL\n" +
-            ");\n" +
-            "\n" +
-            "CREATE TABLE IF NOT EXISTS \"reverificationFeature\" (\n" +
-            "    \"clanId\" INT PRIMARY KEY,\n" +
-            "    \"numberOfDays\" SMALLINT NOT NULL DEFAULT 90\n" +
-            ");\n" +
-            "\n" +
-            "CREATE TABLE IF NOT EXISTS \"blockedUsers\" (\n" +
-            "    \"clanId\" INT UNIQUE,\n" +
-            "    \"discordUserId\" BIGINT UNIQUE,\n" +
-            "    PRIMARY KEY (\"clanId\", \"discordUserId\")\n" +
-            ");";
+    private String queries =
+            "CREATE TABLE IF NOT EXISTS \"clan\" (\n" +
+                    "    \"id\" SERIAL PRIMARY KEY,\n" +
+                    "    \"verificationCode\" TEXT NOT NULL UNIQUE,\n" +
+                    "    \"name\" TEXT NOT NULL,\n" +
+                    "    \"tag\" TEXT NOT NULL,\n" +
+                    "    \"ownerId\" INT NOT NULL,\n" +
+                    "    \"ownerUserId\" BIGINT NOT NULL,\n" +
+                    "    \"discordGuildId\" BIGINT NOT NULL,\n" +
+                    "    \"leaderShipRoleId\" BIGINT NOT NULL,\n" +
+                    "    \"memberRoleId\" BIGINT NOT NULL,\n" +
+                    "    \"discordChannelId\" BIGINT NOT NULL\n" +
+                    ");\n" +
+                    "\n" +
+                    "CREATE TABLE IF NOT EXISTS \"clanMember\" (\n" +
+                    "    \"id\" SERIAL PRIMARY KEY,\n" +
+                    "    \"verificationTime\" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n" +
+                    "    \"nickname\" TEXT NOT NULL,\n" +
+                    "    \"permission\" TEXT NOT NULL DEFAULT \"MEMBER\",\n" +
+                    "    \"locale\" TEXT NOT NULL,\n" +
+                    "    \"clanId\" INT NOT NULL,\n" +
+                    "    \"discordUserId\" BIGINT NOT NULL\n" +
+                    ");\n" +
+                    "\n" +
+                    "CREATE TABLE IF NOT EXISTS \"reverificationFeature\" (\n" +
+                    "    \"clanId\" INT PRIMARY KEY,\n" +
+                    "    \"numberOfDays\" SMALLINT NOT NULL DEFAULT 90\n" +
+                    ");\n" +
+                    "\n" +
+                    "CREATE TABLE IF NOT EXISTS \"blockedUsers\" (\n" +
+                    "    \"clanId\" INT UNIQUE,\n" +
+                    "    \"discordUserId\" BIGINT UNIQUE,\n" +
+                    "    PRIMARY KEY (\"clanId\", \"discordUserId\")\n" +
+                    ");";
 
 
     public boolean isUseOwnH2Database() {
@@ -84,14 +84,6 @@ public class ClanManagerConfig {
 
     public void setQueries(String queries) {
         this.queries = queries;
-    }
-
-    public Class<? extends ClanManager> getCMImplementation() {
-        return CMImplementation;
-    }
-
-    public void setCMImplementation(Class<? extends ClanManager> CMImplementation) {
-        this.CMImplementation = CMImplementation;
     }
 
     public ClanManager getClanManager() {

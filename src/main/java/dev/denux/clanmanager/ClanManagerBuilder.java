@@ -60,16 +60,6 @@ public class ClanManagerBuilder {
     }
 
     /**
-     * Sets a new implementation for the {@link ClanManager} interface.
-     * @param CMImplementation The implementation to use.
-     */
-    @Nonnull
-    public ClanManagerBuilder setClanManagerImplementation(@Nonnull Class<? extends ClanManager> CMImplementation) {
-        config.setCMImplementation(CMImplementation);
-        return this;
-    }
-
-    /**
      * Sets a new implementation for the {@link BasicReverificationJob} interface.
      * @param reverificationJobImpl The implementation to use.
      */
@@ -142,6 +132,6 @@ public class ClanManagerBuilder {
         }
 
         new SystemSetup(config).init();
-        return config.getCMImplementation().getDeclaredConstructor(ClanManagerConfig.class).newInstance(config);
+        return new ClanManager(config);
     }
 }
