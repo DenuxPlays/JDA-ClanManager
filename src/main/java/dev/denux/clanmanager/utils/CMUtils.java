@@ -1,6 +1,6 @@
 package dev.denux.clanmanager.utils;
 
-import dev.denux.clanmanager.entities.ClanMember;
+import dev.denux.clanmanager.internal.entities.ClanMember;
 import net.dv8tion.jda.api.entities.Member;
 
 import javax.annotation.Nonnull;

@@ -13,7 +13,7 @@ plugins {
 
 group = "dev.denux"
 val archivesBaseName = "jda-clanmanager"
-version = "1.0.0-alpha.8"
+version = "1.0.0-alpha.9"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -45,14 +45,14 @@ dependencies {
     // Quartz scheduler
     api("org.quartz-scheduler:quartz:2.3.2")
 
-    api("net.dv8tion:JDA:5.0.0-alpha.17") {
+    api("net.dv8tion:JDA:5.0.0-alpha.20") {
         exclude( module = "opus-java")
     }
 
-    testImplementation("org.postgresql:postgresql:42.4.0")
-    testImplementation("ch.qos.logback:logback-classic:1.2.11")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+    testImplementation("org.postgresql:postgresql:42.5.0")
+    testImplementation("ch.qos.logback:logback-classic:1.4.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
 }
 
 tasks.withType<Test> { useJUnitPlatform() }

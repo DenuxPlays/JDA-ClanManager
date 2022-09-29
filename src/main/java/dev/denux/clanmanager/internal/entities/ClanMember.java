@@ -2,14 +2,11 @@ package dev.denux.clanmanager.internal.entities;
 
 import dev.denux.clanmanager.ClanManager;
 import dev.denux.clanmanager.core.ClanManagerConfig;
-import dev.denux.clanmanager.entities.Clan;
-import dev.denux.clanmanager.entities.ClanMember;
+import dev.denux.clanmanager.core.exceptions.PermissionException;
 import dev.denux.clanmanager.internal.Permission;
-import dev.denux.clanmanager.utils.CMUtils;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.interactions.DiscordLocale;
 import net.dv8tion.jda.internal.utils.JDALogger;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
@@ -20,14 +17,14 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.concurrent.CompletableFuture;
 
-public class ClanMemberImpl implements ClanMember {
+public class ClanMember {
 
-    private final Logger log = JDALogger.getLog(ClanImpl.class);
+    private final Logger log = JDALogger.getLog(Clan.class);
 
     private final int id;
     private final ClanManagerConfig config;
 
-    public ClanMemberImpl(ClanManagerConfig config, int id) {
+    public ClanMember(ClanManagerConfig config, int id) {
         this.id = id;
         this.config = config;
     }
@@ -74,119 +71,79 @@ public class ClanMemberImpl implements ClanMember {
         }
     }
 
-    @Override
     public int getId() {
         return id;
     }
 
-    @Override
     public Timestamp getVerificationDate() {
         return get("verificationTime", Timestamp.class);
     }
 
-    @Override
     public void setVerificationDate(@Nonnull Timestamp verificationDate) {
         set("verificationTime", verificationDate);
     }
 
-    @Override
     public String getNickname() {
         return get("nickname", String.class);
     }
 
-    @Override
     public void setNickname(@Nonnull String nickname) {
         set("nickname", nickname);
     }
 
-    @Override
-    public boolean getLeaderShipStatus() {
-        return get("leaderShipStatus", Boolean.class);
+    @Nonnull
+    public Permission getPermission() {
+        return Permission.valueOf(get("permission", String.class));
     }
 
-    @Override
-    public void setLeaderShipStatus(boolean leaderShipStatus) {
-        setLeaderShipStatus(leaderShipStatus, true);
+    public boolean hasPermission(@Nonnull Permission permission) {
+        return permission.getLevel() > getPermission().getLevel();
     }
 
-    @Override
-    public void setLeaderShipStatus(boolean leaderShipStatus, boolean updateDiscordRoles) {
-        set("leaderShipStatus", leaderShipStatus);
-        if (updateDiscordRoles) new CMUtils().updateLeadershipRole(this, leaderShipStatus);
+    public void removePermission(@Nonnull Permission permission) {
+        if (permission == Permission.MEMBER) {
+            throw new PermissionException("You can't remove the member permission. Use the kick method instead.");
+        }
+        if (permission == Permission.OWNER) {
+            throw new PermissionException("Owner can't be removed it can just be changed. Use Clan.changeOwner() for that.");
+        }
+        set("permission", permission);
     }
 
-    @Override
-    public boolean getCoOwnerStatus() {
-        return get("coOwnerStatus", Boolean.class);
-    }
-
-    @Override
-    public void setCoOwnerStatus(boolean status) {
-        setLeaderShipStatus(status);
-        set("coOwnerStatus", status);
-    }
-
-    @Override
-    public boolean getOwnerStatus() {
-        return getClan().getOwnerId() == getDiscordUserId();
-    }
-
-    @Override
-    public void setAsOwner() {
-        getClan().setOwner(getDiscordMember());
-    }
-
-    @Override
     public DiscordLocale getLocale() {
         return DiscordLocale.from(get("locale", String.class));
     }
 
-    @Override
-    public void setLocale(DiscordLocale locale) {
+    public void setLocale(@Nonnull DiscordLocale locale) {
         set("locale", locale.getLocale());
     }
 
-    @Override
     public int getClanId() {
         return get("clanId", Integer.class);
     }
 
-    @Override
     public Clan getClan() {
         return config.getClanManager().getClan(getClanId());
     }
 
-    @Override
     public long getDiscordUserId() {
         return get("discordUserId", Long.class);
     }
 
-    @Override
     public Member getDiscordMember() {
         return getClan().getDiscordGuild().getMemberById(getDiscordUserId());
     }
 
-    @Override
     public CompletableFuture<Member> retrieveDiscordMember() {
         return getClan().getDiscordGuild().retrieveMemberById(getDiscordUserId()).submit();
     }
 
-    @Override
-    public void setDiscordMember(Member member) {
+    public void setDiscordMember(@Nonnull Member member) {
         set("discordUserId", member.getIdLong());
     }
 
-    @NotNull
-    @Override
+    @Nonnull
     public ClanManager getClanManager() {
         return config.getClanManager();
-    }
-
-    @Override
-    public boolean hasPermission(@NotNull Permission permission) {
-        if (permission.equals(Permission.OWNER) && getOwnerStatus()) return true;
-        if (permission.equals(Permission.CO_OWNER) || getCoOwnerStatus()) return true;
-        if (permission.equals(Permission.LEADERSHIP)) return true;
-        else return false;
     }
 }

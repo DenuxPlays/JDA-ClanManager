@@ -15,7 +15,7 @@ import javax.annotation.Nonnull;
 public class ClanManagerBuilder {
 
     private final ClanManagerConfig config;
-    private HikariConfig hConfig = new HikariConfig();
+    private HikariConfig hikariConfig = new HikariConfig();
     private ClanManagerBuilder(@Nonnull JDA jda) {
         this.config = new ClanManagerConfig();
         this.config.setJda(jda);
@@ -52,20 +52,10 @@ public class ClanManagerBuilder {
      */
     @Nonnull
     public ClanManagerBuilder setJdbcUrl(@Nonnull String jdbcUrl) {
-        HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setJdbcUrl(jdbcUrl);
+        hikariConfig.setJdbcUrl(jdbcUrl);
+        HikariDataSource dataSource = new HikariDataSource(hikariConfig);
         config.setDataSource(dataSource);
         Runtime.getRuntime().addShutdownHook(new Thread(dataSource::close));
-        return this;
-    }
-
-    /**
-     * Sets a new implementation for the {@link ClanManager} interface.
-     * @param CMImplementation The implementation to use.
-     */
-    @Nonnull
-    public ClanManagerBuilder setClanManagerImplementation(@Nonnull Class<? extends ClanManager> CMImplementation) {
-        config.setCMImplementation(CMImplementation);
         return this;
     }
 
@@ -117,7 +107,7 @@ public class ClanManagerBuilder {
         if (!this.config.isUseOwnH2Database()) {
             throw new IllegalStateException("You can only use this method after calling ClanManagerBuilder#enableOwnDatabase()");
         }
-        hConfig = config;
+        hikariConfig = config;
         return this;
     }
 
@@ -129,7 +119,7 @@ public class ClanManagerBuilder {
     @Nonnull
     public ClanManager build() throws ReflectiveOperationException {
         if (config.isUseOwnH2Database()) {
-            new SystemSetup(config).setupH2Database(hConfig);
+            new SystemSetup(config).setupH2Database(hikariConfig);
         }
 
         if (config.getJda() == null) throw new IllegalStateException("JDA instance is null");
@@ -142,6 +132,6 @@ public class ClanManagerBuilder {
         }
 
         new SystemSetup(config).init();
-        return config.getCMImplementation().getDeclaredConstructor(ClanManagerConfig.class).newInstance(config);
+        return new ClanManager(config);
     }
 }
