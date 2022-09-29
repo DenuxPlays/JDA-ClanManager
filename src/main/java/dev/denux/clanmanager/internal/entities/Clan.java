@@ -123,7 +123,7 @@ public class Clan {
         return getDiscordGuild().retrieveMemberById(getOwnerDiscordUserId()).submit();
     }
 
-    public void setOwner(@Nonnull ClanMember owner) {
+    public void changeOwner(@Nonnull ClanMember owner) {
         set("ownerId", owner.getId());
         set("ownerUserId", owner.getDiscordUserId());
     }

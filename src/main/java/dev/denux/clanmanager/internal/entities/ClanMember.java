@@ -4,14 +4,12 @@ import dev.denux.clanmanager.ClanManager;
 import dev.denux.clanmanager.core.ClanManagerConfig;
 import dev.denux.clanmanager.core.exceptions.PermissionException;
 import dev.denux.clanmanager.internal.Permission;
-import dev.denux.clanmanager.utils.CMUtils;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.interactions.DiscordLocale;
 import net.dv8tion.jda.internal.utils.JDALogger;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -93,38 +91,23 @@ public class ClanMember {
         set("nickname", nickname);
     }
 
-    public int getPermissionsLevel() {
-        return get("permission", int.class);
-    }
-
-    @Nullable
+    @Nonnull
     public Permission getPermission() {
-        return Permission.fromLevel(getPermissionsLevel());
+        return Permission.valueOf(get("permission", String.class));
     }
 
     public boolean hasPermission(@Nonnull Permission permission) {
-        return permission.getLevel() == getPermissionsLevel();
-    }
-
-    public void addLeadershipPermission(boolean updateDiscordRoles) {
-        set("permission", Permission.LEADERSHIP.getLevel());
-        if (updateDiscordRoles) new CMUtils().updateLeadershipRole(this, true);
-    }
-
-    public void addLeadershipPermission() {
-        addLeadershipPermission(true);
-    }
-
-
-    public void addCoOwnerPermission() {
-        set("permission", Permission.CO_OWNER.getLevel());
+        return permission.getLevel() > getPermission().getLevel();
     }
 
     public void removePermission(@Nonnull Permission permission) {
         if (permission == Permission.MEMBER) {
             throw new PermissionException("You can't remove the member permission. Use the kick method instead.");
         }
-        set("permission", Permission.fromLevel(permission.getLevel() - 1));
+        if (permission == Permission.OWNER) {
+            throw new PermissionException("Owner can't be removed it can just be changed. Use Clan.changeOwner() for that.");
+        }
+        set("permission", permission);
     }
 
     public DiscordLocale getLocale() {

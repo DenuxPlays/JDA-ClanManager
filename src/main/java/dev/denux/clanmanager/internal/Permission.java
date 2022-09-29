@@ -1,8 +1,5 @@
 package dev.denux.clanmanager.internal;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 /**
  * Represents the permission of a {@link dev.denux.clanmanager.internal.entities.ClanMember}.
  */
@@ -10,47 +7,33 @@ public enum Permission {
     /**
      * The top permission that can only have one {@link net.dv8tion.jda.api.entities.User} at a time.
      */
-    OWNER("owner", 50),
+    OWNER(4),
     /**
      * Helps the Clan owner and has nearly the same permissions as {@link #OWNER}.
      */
-    CO_OWNER("co-owner", 49),
+    CO_OWNER(3),
     /**
      * Can be compared with a moderator.
      */
-    LEADERSHIP("leadership", 48),
+    LEADERSHIP(2),
     /**
      * The standard member permission.
      */
-    MEMBER("member", 0);
+    MEMBER(1);
 
-    private final String name;
     private final int level;
 
-    Permission(@Nonnull String name, int level) {
-        this.name = name;
+    Permission(int level) {
+        if (level > 5) {
+            throw new IllegalArgumentException("Level can not be higher than 4");
+        }
         this.level = level;
     }
 
     /**
-     * Gets you the permission from the given level.
-     * @param level The level of the permission.
-     * @return the permission or null if the level was not found.
+     * Gets the level of the permission. (for internal use only)
+     * @return the level.
      */
-    public static @Nullable Permission fromLevel(int level) {
-        if (level == 0) return MEMBER;
-        for (Permission permission : values()) {
-            if (permission.level == level) {
-                return permission;
-            }
-        }
-        return null;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     public int getLevel() {
         return level;
     }
