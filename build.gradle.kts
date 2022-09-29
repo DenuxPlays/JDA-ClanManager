@@ -13,7 +13,7 @@ plugins {
 
 group = "dev.denux"
 val archivesBaseName = "jda-clanmanager"
-version = "1.0.0-beta.2"
+version = "1.0.0-beta.3"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
