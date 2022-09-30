@@ -6,7 +6,7 @@ A small system to manage clans, guilds or generally users.\
 Mostly used for some privat projects.
 
 ## Installation
-This version of the ClanManager **must** be used with the following Version of JDA: [`net.dv8tion:JDA:5.0.0-alpha.17`](https://github.com/DV8FromTheWorld/JDA/releases/tag/v5.0.0-alpha.16)
+This version of the ClanManager **must** be used with the following Version of JDA: [`net.dv8tion:JDA:5.0.0-alpha.20`](https://github.com/DV8FromTheWorld/JDA/releases/tag/v5.0.0-alpha.20)
 
 ### Maven
 
@@ -25,7 +25,7 @@ Add the dependency
 <dependency> 
     <groupId>com.github.DenuxPlays</groupId> 
     <artifactId>JDA-ClanManager</artifactId> 
-    <version>1.0.0-alpha.8</version> 
+    <version>1.0.0-beta.3</version> 
 </dependency>
 ```
 
@@ -43,6 +43,6 @@ Add the dependency
 ```gradle
 dependencies {
     [...]
-    implementation("com.github.DenuxPlays:JDA-ClanManager:1.0.0-alpha.8")
+    implementation("com.github.DenuxPlays:JDA-ClanManager:1.0.0-beta.3")
 }
 ```
