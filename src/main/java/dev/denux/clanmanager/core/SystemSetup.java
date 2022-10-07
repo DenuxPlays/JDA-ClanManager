@@ -3,6 +3,7 @@ package dev.denux.clanmanager.core;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import dev.denux.clanmanager.core.features.reverifications.ReverificationStateManager;
+import dev.denux.clanmanager.core.sql.SqlSession;
 import net.dv8tion.jda.internal.utils.JDALogger;
 import org.h2.tools.Server;
 import org.slf4j.Logger;
@@ -39,6 +40,9 @@ public class SystemSetup {
 
         config.setReverificationManager(new ReverificationStateManager(config));
         log.info("\t[*] Reverification setup done.");
+
+        initSessionFactory();
+        log.info("Initialized the hibernate session-factory");
 
         log.info("Finished initializing ClanManager.");
     }
@@ -77,5 +81,12 @@ public class SystemSetup {
         } catch (SQLException exception) {
             log.error("Could not set up the database.", exception);
         }
+    }
+
+    /**
+     * Builds and sets the {@link org.hibernate.SessionFactory}
+     */
+    private void initSessionFactory() {
+        config.setSessionFactory(SqlSession.buildSessionFactory());
     }
 }

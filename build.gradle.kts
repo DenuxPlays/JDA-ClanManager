@@ -41,16 +41,20 @@ repositories {
 dependencies {
     //Database stuff
     api("com.h2database:h2:2.1.214")
+    api("org.hibernate.orm:hibernate-hikaricp:6.1.4.Final")
+    api("org.hibernate.orm:hibernate-core:6.1.4.Final")
     api("com.zaxxer:HikariCP:5.0.1")
     // Quartz scheduler
     api("org.quartz-scheduler:quartz:2.3.2")
 
-    api("net.dv8tion:JDA:5.0.0-alpha.20") {
+    api("net.dv8tion:JDA:5.0.0-alpha.21") {
         exclude( module = "opus-java")
     }
+    //Javax annotations
+    compileOnly("com.google.code.findbugs:jsr305:3.0.2")
 
     testImplementation("org.postgresql:postgresql:42.5.0")
-    testImplementation("ch.qos.logback:logback-classic:1.4.1")
+    testImplementation("ch.qos.logback:logback-classic:1.4.3")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
 }

@@ -6,7 +6,6 @@ import dev.denux.clanmanager.core.ClanManagerConfig;
 import dev.denux.clanmanager.core.SystemSetup;
 import dev.denux.clanmanager.core.features.reverifications.BasicReverificationJob;
 import net.dv8tion.jda.api.JDA;
-
 import javax.annotation.Nonnull;
 
 /**
@@ -114,10 +113,9 @@ public class ClanManagerBuilder {
     /**
      * Returns a {@link ClanManager} instance that has been validated.
      * @return the built, usable {@link ClanManager}
-     * @throws ReflectiveOperationException If your {@link ClanManager} implementation has an invalid constructor.
      */
     @Nonnull
-    public ClanManager build() throws ReflectiveOperationException {
+    public ClanManager build() {
         if (config.isUseOwnH2Database()) {
             new SystemSetup(config).setupH2Database(hikariConfig);
         }

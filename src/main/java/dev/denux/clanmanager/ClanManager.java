@@ -104,7 +104,7 @@ public class ClanManager {
         new CMChecks(config).checkClanBeforeCreation(name, tag, verificationCode, guild, owner, channel, leadershipRole, memberRole);
         try(Connection con = config.getDataSource().getConnection()) {
             PreparedStatement pstm = con.prepareStatement(
-                    "INSERT INTO \"clan\" (\"name\", \"tag\", \"verificationCode\", \"discordGuildId\", \"ownerId\", \"discordChannelId\",\"leaderShipRoleId\", \"memberRoleId\") VALUES (?, ?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+                    "INSERT INTO \"clan\" (\"name\", \"tag\", \"verificationCode\", \"discordGuildId\", \"ownerId\", \"ownerUserId\", \"discordChannelId\",\"leaderShipRoleId\", \"memberRoleId\") VALUES (?, ?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
             pstm.setString(1, name);
             pstm.setString(2, tag);
             pstm.setString(3, verificationCode);

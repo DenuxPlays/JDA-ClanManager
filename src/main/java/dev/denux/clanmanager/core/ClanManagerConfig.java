@@ -6,6 +6,7 @@ import dev.denux.clanmanager.core.features.reverifications.BasicReverificationJo
 import dev.denux.clanmanager.core.features.reverifications.ReverificationJob;
 import dev.denux.clanmanager.core.features.reverifications.ReverificationStateManager;
 import net.dv8tion.jda.api.JDA;
+import org.hibernate.SessionFactory;
 
 /**
  * Data class which contains the configuration for a single {@link ClanManager} instance.
@@ -15,6 +16,7 @@ public class ClanManagerConfig {
     private boolean shouldLoadSchema = true;
     private boolean useOwnH2Database = false;
     private HikariDataSource dataSource;
+    private SessionFactory sessionFactory;
     private ClanManager clanManager;
     private Class<? extends BasicReverificationJob> reverificationJobImpl = ReverificationJob.class;
     private ReverificationStateManager reverificationManager;
@@ -116,5 +118,13 @@ public class ClanManagerConfig {
 
     public void setDataSource(HikariDataSource dataSource) {
         this.dataSource = dataSource;
+    }
+
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 }
